@@ -25,7 +25,7 @@ class User(db.Model):
         return check_password_hash(self.password, password)
 
 class Workout(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    workout_id = db.Column(db.Integer, primary_key=True)
     exercise_name = db.Column(db.String, nullable=False)
     exercise_image1 = db.Column(db.String, nullable=True)
     exercise_image2 = db.Column(db.String, nullable=True)
@@ -45,7 +45,7 @@ class Workout(db.Model):
 
     def get_json(self):
         return {
-            'id': self.id,
+            'workout_id': self.workout_id,
             'exercise_name': self.exercise_name,
             'exercise_image1': self.exercise_image1,
             'exercise_image2': self.exercise_image2,
@@ -56,9 +56,9 @@ class Workout(db.Model):
         }
 
 class Routine(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    routine_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    workout_id = db.Column(db.Integer, db.ForeignKey('workout.id'), nullable=False)
+    workout_id = db.Column(db.Integer, db.ForeignKey('workout.workout_id'), nullable=False)
     workout = db.relationship('Workout')
 
     def __init__(self, user_id, workout_id):
@@ -67,7 +67,7 @@ class Routine(db.Model):
 
     def get_json(self):
         return {
-            'id': self.id,
+            'routine_id': self.routine_id,
             'user_id': self.user_id,
             'workout': self.workout.get_json()
         }
