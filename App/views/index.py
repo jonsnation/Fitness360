@@ -16,8 +16,7 @@ def index_page():
     workout_id = 1  # replace with a valid workout ID
     workout = Workout.query.get(workout_id)
     flash('Login Successful')
-    return render_template('index.html')
-
+    return render_template('index.html', workouts=workouts, workout=workout)
 
 @index_views.route('/init', methods=['GET'])
 def init():
