@@ -40,16 +40,15 @@
                 <a href="#" style="font-size:1.5em" class="brand-logo left">Logged in As: Bob  </a>
                 </div>
             </nav>
-      
+
             <!--When View is selected, Workout details should appear for that exercise in the middle-->
             <h5>Select An Exercise</h5>
             <div class="input-field col s12">
                 <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
-                <a href="/app/{{workout.id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
-                <div class="additional-info">
-                    <a href="/app/{{workout.id}}" class="secondary-content">View</a>
-                </div>
+                <form action="/app/{{workout.id}}" method="post">
+                    <a href="#" onclick="this.closest('form').submit();return false;" class="collection-item">{{ workout.exercise_name }}</a><br>
+                </form>
                 {% endfor %}
                 </div>
             </div>
@@ -60,11 +59,6 @@
     <main class="col s12">
         <nav class="nav-extended purple" style="margin-bottom:10px">
             <div class="nav-wrapper">
-              <!-- <span style="margin-left: 10px;">
-                View Exercise Details
-              </span> -->
-              
-            
             <!-- Workout Details -->
             {% if selected_workout %}
             <div class="card">
@@ -77,19 +71,20 @@
                 </span>
                 <p>ID: {{selected_workout.id}}</p>
                 <p>Workout Name: {{selected_workout.exercise_name}}</p>
-                <p>Deescription: {{selected_workout.description}}</p>
+                <p>Description: {{selected_workout.description}}</p>
                 <p>Muscle Group: {{selected_workout.muscle_group}}</p>
                 <p>Equipment: {{selected_workout.equipment}}</p>
                 <p>Rating: {{selected_workout.rating}}</p>
             </div>
             <button class="btn waves-effect waves-light" type="add">
                 Add to Routine
-              </button>
+            </button>
             </div>
             {% endif %}
             </div>
         </nav>
     </main>
+
 
     <!--Right navigation bar for user's created routines -->
     <section class="col s12 m3">
