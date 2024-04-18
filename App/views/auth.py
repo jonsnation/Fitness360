@@ -57,7 +57,7 @@ def signup_user_view():
             db.session.add(new_user)
             db.session.commit()
             flash(f"User {username} created!")
-            return redirect(url_for('index_views.index_page'))
+            return redirect(url_for('index_views.login_page'))
         except IntegrityError:
             db.session.rollback()
             flash('Username already exists', 'error')
