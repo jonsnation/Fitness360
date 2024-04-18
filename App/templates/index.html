@@ -33,8 +33,8 @@
 {% endif %} -->
 
     <!--Left side navigation bar to select an exercise-->
-    <section class="col s12 m9" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
-        <ul id="slide-out" class="sidenav sidenav-fixed">
+    <section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+        <ul id="slide-out" class="sidenav sidenav-fixed" style="width: 20%; max-width: 215px">
             <nav class="nav-extended purple" style="margin-bottom:10px">
                 <div class="nav-wrapper">
                 <a href="#" style="font-size:1.5em" class="brand-logo left">Logged in As: Bob  </a>
@@ -57,7 +57,7 @@
     </section>
 
     <!--Main area in the middle to display selected exercise details-->
-    <main class="col s12">
+    <main class="col s12 m6" >
         <nav class="nav-extended purple" style="margin-bottom:10px">
             <div class="nav-wrapper">
               <!-- <span style="margin-left: 10px;">
@@ -68,7 +68,7 @@
             <!-- Workout Details -->
             {% if selected_workout %}
             <div class="card">
-            <div class = "card-image">
+            <div class ="card-image">
                 <img src="{{selected_workout.image1}}" alt="" class="circle responsive-img">
             </div>
             <div class="card-content">

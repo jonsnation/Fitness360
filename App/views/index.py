@@ -9,7 +9,6 @@ index_views = Blueprint('index_views', __name__, template_folder='../templates')
 def login_page():
     return render_template('login.html')
     
-
 @index_views.route('/app', methods=['GET'])
 def index_page():
     workouts = Workout.query.all()
