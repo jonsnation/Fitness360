@@ -1,17 +1,17 @@
 {% extends "layout.html" %}
-{% block title %}Flask MVC App{% endblock %}
-{% block page %}Flask MVC App{% endblock %}
+{% block title %}Fitness 360{% endblock %}
+{% block page %}Fitness 360{% endblock %}
 
 {{ super() }}
 
 {% block content %}
-    <h1>Flask MVC</h1>
+    <!-- <h1>Selected Workout</h1> -->
     {% if is_authenticated %}
         <p> Welcome {{current_user.username}} </p>
     {% endif %}
-    <p>This is a boilerplate flask application which follows the MVC pattern for structuring the project.</p>
+    <!-- <p>Selected workout and description will appear here.</p> -->
 
-    <h2>Workouts</h2>
+    <!-- <h2>Workouts</h2>
 {% if workouts %}
     <div class="row">
         {% for workout in workouts %}
@@ -30,6 +30,73 @@
     </div>
 {% else %}
     <p>No workouts found.</p>
-{% endif %}
+{% endif %} -->
+
+    <!--Left side navigation bar to select an exercise-->
+    <section class="col s12 m9" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <nav class="nav-extended purple" style="margin-bottom:10px">
+                <div class="nav-wrapper">
+                <a href="#" style="font-size:1.5em" class="brand-logo left">Logged in As: Bob  </a>
+                </div>
+            </nav>
+      
+            <!--When View is selected, Workout details should appear for that exercise in the middle-->
+            <h5>Select An Exercise</h5>
+            <div class="input-field col s12">
+                <div class="scrollable-list collection with-scroller">
+                {% for workout in workouts %}
+                <a href="/app/{{workout.id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                <div class="additional-info">
+                    <a href="/app/{{workout.id}}" class="secondary-content">View</a>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+        </ul>
+    </section>
+
+    <!--Main area in the middle to display selected exercise details-->
+    <main class="col s12">
+        <nav class="nav-extended purple" style="margin-bottom:10px">
+            <div class="nav-wrapper">
+              <!-- <span style="margin-left: 10px;">
+                View Exercise Details
+              </span> -->
+              
+            
+            <!-- Workout Details -->
+            {% if selected_workout %}
+            <div class="card">
+            <div class = "card-image">
+                <img src="{{selected_workout.image1}}" alt="" class="circle responsive-img">
+            </div>
+            <div class="card-content">
+                <span class = "card-title">
+                {{selected_workout.exercise_name}}
+                </span>
+                <p>ID: {{selected_workout.id}}</p>
+                <p>Workout Name: {{selected_workout.exercise_name}}</p>
+                <p>Deescription: {{selected_workout.description}}</p>
+                <p>Muscle Group: {{selected_workout.muscle_group}}</p>
+                <p>Equipment: {{selected_workout.equipment}}</p>
+                <p>Rating: {{selected_workout.rating}}</p>
+            </div>
+            <button class="btn waves-effect waves-light" type="add">
+                Add to Routine
+              </button>
+            </div>
+            {% endif %}
+            </div>
+        </nav>
+    </main>
+
+    <!--Right navigation bar for user's created routines -->
+    <section class="col s12 m3">
+    
+        
+
+    </section>
+    
 
 {% endblock %}
