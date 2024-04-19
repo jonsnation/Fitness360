@@ -35,8 +35,15 @@
     }
 </style>
 
-<div class="row">
-    <div class="column left">
+<!--Left side navigation bar to select an exercise-->
+<section class="col s12 m9" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+    <ul id="slide-out" class="sidenav sidenav-fixed">
+        <nav class="nav-extended purple" style="margin-bottom:10px">
+            <div class="nav-wrapper">
+            <a href="#" style="font-size:1.5em" class="brand-logo left">Logged in As: Bob  </a>
+            </div>
+        </nav>
+
         <!-- Left column content (Select an Exercise) -->
         {% if is_authenticated %}
             <p> Welcome {{current_user.username}} </p>
@@ -49,21 +56,22 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
+            
+    </ul>
+</section>
+    
 
-    <div class="column middle">
+    <div class="column middle center">
         <!-- Middle column content (Selected Workout) -->
         {% if selected_workout %}
         <div class="card">
             <div class = "card-image">
-                <img src="{{selected_workout.exercise_image1}}" alt="" class="circle responsive-img smaller-image">
                 <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
             </div>
             <div class="card-content">
                 <span class = "card-title">
                 {{selected_workout.exercise_name}}
                 </span>
-                <p>ID: {{selected_workout.workout_id}}</p>
                 <p>Workout Name: {{selected_workout.exercise_name}}</p>
                 <p>Description: {{selected_workout.description}}</p>
                 <p>Muscle Group: {{selected_workout.muscle_group}}</p>
