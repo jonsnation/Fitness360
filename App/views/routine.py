@@ -29,7 +29,7 @@ def create_routine2():
     return jsonify(routine.get_json())
 
 # Add workout to routine
-@routine_views.route('/routine/<int:routine_id>/add_workout', methods=['POST'])
+@routine_views.route('/add_workout/<int:routine_id>', methods=['POST'])
 @jwt_required
 def add_workout(routine_id):
     workout_id = request.form.get('workout_id')

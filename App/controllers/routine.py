@@ -1,4 +1,4 @@
-from App.models import Routine, Workout
+from App.models import Routine
 from App.database import db
 
 
