@@ -1,7 +1,7 @@
 from App.database import db
 
 class WorkoutRoutine(db.Model):
-    id = db.Column(db.Integer, primarykey = True)
+    id = db.Column(db.Integer, primary_key = True)
     routine_id = db.Column(db.Integer,  db.ForeignKey('routine.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.workout_id'), nullable=False)
