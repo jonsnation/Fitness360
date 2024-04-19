@@ -9,6 +9,12 @@
          .custom-black {
     background-color: #1c1c1c; 
 }
+    .container{
+        padding: 10px;
+        background-color: rgb(216, 212, 212);
+        display: flex;
+        align-items: center;
+    }
     .column {
         float: left;
         padding: 10px;
@@ -18,12 +24,21 @@
     .left {
         width: 25%;
     }
-    .middle {
-        width: 50%;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-    }
+    .row {
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    height: 100vh;
+}
+
+
+.column.middle {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column;
+    width: 50%; 
+}
     .right {
         width: 25%;
     }
@@ -37,26 +52,27 @@
         height: auto;
     }
 </style>
-<main style="background-color: rgb(216, 212, 212);">
-    <div class="row">
+
+
 <!--Left side navigation bar to select an exercise-->
-<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+<section  style="margin-top: 5px; overflow-y:scroll; height: 86vh">
     <ul id="slide-out" class="sidenav sidenav-fixed">
         <nav class="nav-extended custom-black" style="margin-bottom:10px">
             <div class="nav-wrapper">
-            <a href="#" style="font-size:1.2em" class="brand-logo">Logged in As: {{current_user.username}} </a>
+            <a href="#" style="font-size:1.2em" class="brand-logo">Let's get ripped: {{current_user.username}} </a>
             </div>
         </nav>
 
         <!-- Left column content (Select an Exercise) -->
-        {% if is_authenticated %}
-            <p> Let's get ripped {{current_user.username}} </p>
-        {% endif %}
         <h5>Select An Exercise</h5>
         <div class="input-field col s12">
             <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
+                {% if workout.id == selected_workout.id %}
+                <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
+                {% else %}
                 <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -64,7 +80,7 @@
     </ul>
 </section>
     
-
+<div class="row">
     <div class="column middle center">
         <!-- Middle column content (Selected Workout) -->
         {% if selected_workout %}
@@ -86,25 +102,30 @@
             <div class="card-actions">
                 <form method = "POST" action = "">
                     <!-- /routine/create -->
-                    <label for="name_inline">Add</label>
-                    <input class="btn waves-effect waves-light center" type="submit" value="submit">
+                    <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE">
                 </form>
             </div>
             
         </div>
         {% endif %}
     </div>
+</div>
 
-    
-    <!-- <div class="row" style="width: 95%; height: 67vh; overflow-y:scroll; margin-left: auto;  margin-right: auto;">
        
-      </div> -->
-
-    <div class="column right">
+   
+<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+    
         <!-- Right column content (Routines) -->
+        <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top:65px">
+            <nav class="nav-extended custom-black">
+                <div class="nav-wrapper">
+                <a href="#" style="font-size:1.2em" class="brand-logo">{{current_user.username}}'s Routines </a>
+                </div>
+            </nav>
+        </ul>
+</section>
         <!-- Add your routines content here -->
-        
-        <div class="col s12">
+        <!-- <div class="col s12 m3">
 
             Test 
             {% if current_user.routine%}
@@ -121,8 +142,6 @@
             {% else %}
             <h2>Add a routine to see routines</h2>
             {% endif %}
-        </div>
-    </div>
-    </div>
-</main>
+        </div> -->
+
 {% endblock %}
