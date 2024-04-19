@@ -1,3 +1,6 @@
+from App.models import Workout
+from App.database import db
+
 def get_all_workouts():
     return Workout.query.all()
 
