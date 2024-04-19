@@ -63,6 +63,16 @@
             </div>
         </nav>
 
+        <!-- Create Routine here -->
+        <!-- <div style="height: min-content;"> -->
+            <h6>Create a routine</h6>
+            <form class="row" style="height: min-content;" method="POST" action="/app/create">
+                    <input id="routine_name" type="text" name="routine_name">
+                    <label for="name_inline">Name</label>
+                    <input class = "btn grey left" type="submit" value="SUBMIT" id="createBtn"/>
+            </form>
+        <!-- </div> -->
+        
         <!-- Left column content (Select an Exercise) -->
         <h5>Select An Exercise</h5>
         <div class="input-field col s12">
@@ -82,6 +92,8 @@
     
 <div class="row">
     <div class="column middle center">
+
+
         <!-- Middle column content (Selected Workout) -->
         {% if selected_workout %}
         <div class="card">
@@ -116,6 +128,7 @@
 <section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
     
         <!-- Right column content (Routines) -->
+         <!-- Add your routines content here -->
         <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top:65px">
             <nav class="nav-extended custom-black">
                 <div class="nav-wrapper">
@@ -125,10 +138,17 @@
             <div class="row">
                 <div class="col s12" style="right:o; left: auto; margin-top: 65px">
                     {% for workout_routine in workout_routines%}
-                        {%if workout_routine.user_id == current_user.id%}
-                            {%if workout_routine.routine_id == selected_routine%}
+                        {% if workout_routine.user_id == current_user.id%}
+                            {% if workout_routine.routine_id == selected_routine%}
                                 {% for workout in workouts %}
-                                    {%%}
+                                    {% if workout.id == workout_routine.workout_id %}
+                                        <div class="row" style="height: 50px;">
+                                            <img src="{{workout.exercise_image2}}" width ="10px">
+                                            <p>Name: {{workout.exercise_name}} </p>
+                                            <p>Description: {{workout.description}}</p>
+                                            <p>Rating: {{workout.rating}} </p>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
                             {% endif %}
                         {% endif %}
@@ -155,7 +175,7 @@
         </div> -->
         </ul>
 </section>
-        <!-- Add your routines content here -->
+       
         
 
 {% endblock %}

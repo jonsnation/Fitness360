@@ -1,7 +1,8 @@
-from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify,flash
+from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify,flash, url_for
 from App.models import db, User, Workout, Routine
-from App.controllers import create_user
-from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
+from flask_jwt_extended import jwt_required, current_user as jwt_current_user, unset_jwt_cookies, set_access_cookies
+
+import csv
 
 from App.controllers import (
     create_user,
@@ -11,13 +12,17 @@ from App.controllers import (
     get_all_users_json,
     jwt_required,
     create_routine,
+    create_routine_declaration,
+    find_routine,
     get_all_routines,
-    get_routine,
+    get_routine_by_name,
+    get_routine_by_id,
     get_user_routines,
     update_routine,
     add_workout_to_routine,
     delete_routine,
     get_all_workout_routines,
+    get_all_workouts_in_routines,
     get_all_workouts,
     get_workout_by_id,
     get_workout_by_name,
@@ -34,16 +39,28 @@ def login_page():
 @index_views.route('/app', methods=['GET'])
 @index_views.route('/app/<workout_id>', methods=['GET'])
 @jwt_required()
-def index_page(workout_id=None):
+def index_page(workout_id = None, routine_id = 1):
     workouts = get_all_workouts()
+    declared_routine = get_routine_by_id(routine_id)
+
+    if declared_routine:
+        routines = get_all_routines()
+        workout_routines = get_all_workout_routines()
+        selected_routine = get_routine_by_id(declared_routine.routine_id)
+        user_routines = get_all_workouts_in_routines(routine_id)
+    else:
+        declared_routine = create_routine_declaration(jwt_current_user)
+        routines = get_all_routines()
+        workout_routines = get_all_workout_routines()
+        selected_routine = get_routine_by_id(declared_routine.routine_id)
+        user_routines = get_all_workouts_in_routines(declared_routine.routine_id)
+
     if workout_id is not None:
         selected_workout = Workout.query.get(workout_id)
     else:
         selected_workout = None
-    workout_routines = get_all_workout_routines()
-    return render_template('index.html', workouts=workouts, selected_workout=selected_workout, current_user=current_user,
-            workout_routines=workout_routines)
 
+    return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user)
 
 @index_views.route('/init', methods=['GET'])
 def initialize():
@@ -87,12 +104,20 @@ def health_check():
 
 
 # Create routines
-@index_views.route('/routine/create', methods=['POST'])
-@jwt_required
-def create_routine2():
-    data = request.json
-    routine = create_routine(data['name'], data['description'], jwt_current_user.id)
-    return jsonify(routine.get_json())
+@index_views.route('/app/create', methods=['POST'])
+@jwt_required()
+def create_routine_route():
+    data = request.form
+    search_routine = find_routine(jwt_current_user, data['routine_name'])# not essential but up to y'all
+
+    if not search_routine:
+        routine = create_routine(jwt_current_user, data['routine_name'])
+        flash('new routine made \(￣︶￣*\))')
+
+    else:
+        flash("Could not make routine as it already exist")
+       
+    return redirect(url_for('index_views.index_page'))
 
 # Add workout to routine
 # @index_views.route('/add_workout/<int:routine_id>', methods=['POST'])
