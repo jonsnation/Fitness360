@@ -68,11 +68,11 @@
         <div class="input-field col s12">
             <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
-                {% if workout.id == selected_workout.id %}
-                <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
-                {% else %}
-                <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
-                {% endif %}
+                    {% if workout.id == selected_workout.id %}
+                        <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
+                    {% else %}
+                        <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -100,7 +100,7 @@
             </div>
 
             <div class="card-actions">
-                <form method = "POST" action = "">
+                <form method = "POST" action = "/add_workout/<int:routine_id>">
                     <!-- /routine/create -->
                     <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE">
                 </form>
@@ -122,10 +122,20 @@
                 <a href="#" style="font-size:1.2em" class="brand-logo">{{current_user.username}}'s Routines </a>
                 </div>
             </nav>
-        </ul>
-</section>
-        <!-- Add your routines content here -->
-        <!-- <div class="col s12 m3">
+            <div class="row">
+                <div class="col s12" style="right:o; left: auto; margin-top: 65px">
+                    {% for workout_routine in workout_routines%}
+                        {%if workout_routine.user_id == current_user.id%}
+                            {%if workout_routine.routine_id == selected_routine%}
+                                {% for workout in workouts %}
+                                    {%%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- <div class="col s12 m3">
 
             Test 
             {% if current_user.routine%}
@@ -143,5 +153,9 @@
             <h2>Add a routine to see routines</h2>
             {% endif %}
         </div> -->
+        </ul>
+</section>
+        <!-- Add your routines content here -->
+        
 
 {% endblock %}

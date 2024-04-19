@@ -5,6 +5,8 @@ from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, se
 
 from App.controllers import (
     create_user,
+    get_user_by_username,
+    get_user,
     get_all_users,
     get_all_users_json,
     jwt_required,
@@ -14,7 +16,11 @@ from App.controllers import (
     get_user_routines,
     update_routine,
     add_workout_to_routine,
-    delete_routine
+    delete_routine,
+    get_all_workout_routines,
+    get_all_workouts,
+    get_workout_by_id,
+    get_workout_by_name,
 )
 
 
@@ -29,18 +35,21 @@ def login_page():
 @index_views.route('/app/<workout_id>', methods=['GET'])
 @jwt_required()
 def index_page(workout_id=None):
-    workouts = Workout.query.all()
+    workouts = get_all_workouts()
     if workout_id is not None:
         selected_workout = Workout.query.get(workout_id)
     else:
         selected_workout = None
-    return render_template('index.html', workouts=workouts, selected_workout=selected_workout, current_user=current_user)
+    workout_routines = get_all_workout_routines()
+    return render_template('index.html', workouts=workouts, selected_workout=selected_workout, current_user=current_user,
+            workout_routines=workout_routines)
 
 
 @index_views.route('/init', methods=['GET'])
 def initialize():
     db.drop_all()
     db.create_all()
+    null_found = False
     # Load workouts from CSV file
     with open('workout.csv', encoding='unicode_escape') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -48,7 +57,7 @@ def initialize():
             print(row)
             # Check for null values in the row
             if not all(row.values()):
-                print("Null value found, skipping row.")
+                null_found = True
                 continue
             workout = Workout(exercise_name=row['Exercise_Name'], 
                               exercise_image1=row['Exercise_Image'], 
@@ -60,10 +69,13 @@ def initialize():
             db.session.add(workout)
     db.session.commit()
 
-    # Print workouts to console
-    workouts = Workout.query.all()
-    for workout in workouts:
-        print(workout.get_json())
+    # # Print workouts to console
+    if null_found:
+        print("Null value(s) found and skipped")
+    print("parsed csv successfully")
+    # workouts = Workout.query.all()
+    # for workout in workouts:
+    #     print(workout.get_json())
     create_user('bob', 'bobpass')
     print('database intialized')
 
@@ -83,7 +95,7 @@ def create_routine2():
     return jsonify(routine.get_json())
 
 # Add workout to routine
-# @routine_views.route('/add_workout/<int:routine_id>', methods=['POST'])
+# @index_views.route('/add_workout/<int:routine_id>', methods=['POST'])
 # @jwt_required
 # def add_workout(routine_id):
 #     workout_id = request.form.get('workout_id')

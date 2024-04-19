@@ -31,3 +31,34 @@ def update_user(id, username):
         return db.session.commit()
     return None
     
+def find_routine(self, name):
+    found = Routine.query.filter_by(name=name)
+
+    if found:
+        return found
+    return None
+    
+def create_routine(self, name):
+    routine = Routine(user_id = self.id, name = name)
+    db.session.add(routine)
+    db.session.commit()
+    return routine
+    
+def find_workout (self, routine_id, workout_id):
+    find = RoutineWorkout.query.filter_by(user_id = self.id, workout_id = workout_id, routine_id = routine_id).first()
+    if find:
+        return False
+    else:
+        return True
+
+def add_workout_to_routine(self, routine_id, workout_id):
+    workout_routine = RoutineWorkout(self.id, workout_id = workout_id, routine_id = routine_id)
+    db.session.add(workout_routine)
+    db.session.commit()
+    return workout_routine
+
+#check
+def remove_workout_from_routine(self, routine_id, workout_id):
+    workout_routine = RoutineWorkout.query.filter_by(user_id=self.id, routine_id=routine_id, workout_id=workout_id)
+    db.session.commit()
+    return None
