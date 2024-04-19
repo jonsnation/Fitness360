@@ -2,7 +2,7 @@ from App.models import Routine
 from App.database import db
 
 
-def create_routine(name, description, user_id):
+def create_routine2(name, description, user_id):
     routine = Routine(name=name, description=description, user_id=user_id)
     db.session.add(routine)
     db.session.commit()
@@ -10,8 +10,11 @@ def create_routine(name, description, user_id):
 
 def get_all_routines():
     return Routine.query.all()
+    
+def get_routine_by_name(name):
+    return Routine.query.filter_by(name=name).first()
 
-def get_routine(id):
+def get_routine_by_id(id):
     return Routine.query.get(id)
 
 def get_user_routines(user_id):

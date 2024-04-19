@@ -1,4 +1,4 @@
-from App.models import User
+from App.models import User, Routine, Workout, WorkoutRoutine
 from App.database import db
 
 def create_user(username, password):
@@ -32,7 +32,7 @@ def update_user(id, username):
     return None
     
 def find_routine(self, name):
-    found = Routine.query.filter_by(name=name)
+    found = Routine.query.filter_by(name=name, user_id = self.id).first()
 
     if found:
         return found
@@ -43,6 +43,12 @@ def create_routine(self, name):
     db.session.add(routine)
     db.session.commit()
     return routine
+
+def create_routine_declaration(self):
+    declaration = Routine(self.id, 'Basic Routine')
+    db.session.add(declaration)
+    db.session.commit()
+    return declaration
     
 def find_workout (self, routine_id, workout_id):
     find = RoutineWorkout.query.filter_by(user_id = self.id, workout_id = workout_id, routine_id = routine_id).first()
