@@ -6,6 +6,9 @@
 
 {% block content %}
 <style>
+         .custom-black {
+    background-color: #1c1c1c; 
+}
     .column {
         float: left;
         padding: 10px;
@@ -17,7 +20,7 @@
     }
     .middle {
         width: 50%;
-        display: flex;
+        display: inline-flex;
         justify-content: center;
         align-items: center;
     }
@@ -34,19 +37,20 @@
         height: auto;
     }
 </style>
-
+<main style="background-color: rgb(216, 212, 212);">
+    <div class="row">
 <!--Left side navigation bar to select an exercise-->
-<section class="col s12 m9" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
     <ul id="slide-out" class="sidenav sidenav-fixed">
-        <nav class="nav-extended purple" style="margin-bottom:10px">
+        <nav class="nav-extended custom-black" style="margin-bottom:10px">
             <div class="nav-wrapper">
-            <a href="#" style="font-size:1.5em" class="brand-logo left">Logged in As: Bob  </a>
+            <a href="#" style="font-size:1.2em" class="brand-logo">Logged in As: {{current_user.username}} </a>
             </div>
         </nav>
 
         <!-- Left column content (Select an Exercise) -->
         {% if is_authenticated %}
-            <p> Welcome {{current_user.username}} </p>
+            <p> Let's get ripped {{current_user.username}} </p>
         {% endif %}
         <h5>Select An Exercise</h5>
         <div class="input-field col s12">
@@ -119,5 +123,6 @@
             {% endif %}
         </div>
     </div>
-</div>
+    </div>
+</main>
 {% endblock %}
