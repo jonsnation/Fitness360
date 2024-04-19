@@ -78,16 +78,45 @@
                 <p>Equipment: {{selected_workout.equipment}}</p>
                 <p>Rating: {{selected_workout.rating}}</p>
             </div>
-            <button class="btn waves-effect waves-light" type="add">
-                Add to Routine
-            </button>
+
+            <div class="card-actions">
+                <form method = "POST" action = "/routine/create">
+                    <label for="name_inline">Add</label>
+                    <input class="btn waves-effect waves-light center" type="submit" value="submit">
+                </form>
+            </div>
+            
         </div>
         {% endif %}
     </div>
 
+    
+    <!-- <div class="row" style="width: 95%; height: 67vh; overflow-y:scroll; margin-left: auto;  margin-right: auto;">
+       
+      </div> -->
+
     <div class="column right">
         <!-- Right column content (Routines) -->
         <!-- Add your routines content here -->
+        
+        <div class="col s12">
+
+            Test 
+            {% if current_user.routine%}
+            <h3>ROUTINES</h3>
+                {% for routines in current_user.routine%}
+                <div class="card">
+                    <div class="card-content">
+                    <p>Testing Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium corporis ut tempore illum ad minima et fugiat, in animi voluptate, voluptatibus dolores magnam laborum deserunt! Sed minus exercitationem maiores expedita?</p>
+                    <p>Rating{{review.rating}}</p>
+                    <span class="card-title">Author:</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <h2>Add a routine to see routines</h2>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

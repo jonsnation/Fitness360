@@ -5,6 +5,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username =  db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)
+    routine = db.relationship('Routine', backref='user')
 
     def __init__(self, username, password):
         self.username = username
@@ -59,7 +60,7 @@ class Routine(db.Model):
     routine_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.workout_id'), nullable=False)
-    workout = db.relationship('Workout')
+    workout = db.relationship('Workout', backref='routine', lazy = True)
 
     def __init__(self, user_id, workout_id):
         self.user_id = user_id
