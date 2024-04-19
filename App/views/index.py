@@ -52,7 +52,7 @@ def health_check():
 
 
 # Create routines
-@routine_views.route('/routine/create', methods=['POST'])
+@index_views.route('/routine/create', methods=['POST'])
 @jwt_required
 def create_routine2():
     data = request.json
@@ -60,41 +60,41 @@ def create_routine2():
     return jsonify(routine.get_json())
 
 # Add workout to routine
-@routine_views.route('/add_workout/<int:routine_id>', methods=['POST'])
-@jwt_required
-def add_workout(routine_id):
-    workout_id = request.form.get('workout_id')
-    add_workout_to_routine(routine_id, workout_id)
-    return redirect(url_for('user_views.edit_routine2', id=routine_id))
+# @routine_views.route('/add_workout/<int:routine_id>', methods=['POST'])
+# @jwt_required
+# def add_workout(routine_id):
+#     workout_id = request.form.get('workout_id')
+#     add_workout_to_routine(routine_id, workout_id)
+#     return redirect(url_for('user_views.edit_routine2', id=routine_id))
 
-# View/Edit routine
-@routine_views.route('/routine/edit/<int:id>', methods=['GET', 'POST'])
-@jwt_required
-def edit_routine2(id):
-    routine = get_routine(id)
-    if not routine or routine.user_id != jwt_current_user.id:
-        return redirect(url_for('user_views.display_routines'))
+# # View/Edit routine
+# @routine_views.route('/routine/edit/<int:id>', methods=['GET', 'POST'])
+# @jwt_required
+# def edit_routine2(id):
+#     routine = get_routine(id)
+#     if not routine or routine.user_id != jwt_current_user.id:
+#         return redirect(url_for('user_views.display_routines'))
 
-    if request.method == 'POST':
-        name = request.form.get('name')
-        description = request.form.get('description')
-        updated_routine = update_routine(id, name=name, description=description)
-        if updated_routine:
-            return redirect(url_for('user_views.display_routines'))
+#     if request.method == 'POST':
+#         name = request.form.get('name')
+#         description = request.form.get('description')
+#         updated_routine = update_routine(id, name=name, description=description)
+#         if updated_routine:
+#             return redirect(url_for('user_views.display_routines'))
 
-    workouts = get_all_workouts()
-    return render_template('routine_form.html', form_action=url_for('user_views.edit_routine2', id=id), routine=routine, workouts=workouts)
+#     workouts = get_all_workouts()
+#     return render_template('routine_form.html', form_action=url_for('user_views.edit_routine2', id=id), routine=routine, workouts=workouts)
 
-# Delete routine
-@routine_views.route('/routine/delete/<int:id>', methods=['POST'])
-@jwt_required
-def delete_routine2(id):
-    routine = get_routine(id)
-    if not routine or routine.user_id != jwt_current_user.id:
-        return redirect(url_for('user_views.display_routines'))
+# # Delete routine
+# @routine_views.route('/routine/delete/<int:id>', methods=['POST'])
+# @jwt_required
+# def delete_routine2(id):
+#     routine = get_routine(id)
+#     if not routine or routine.user_id != jwt_current_user.id:
+#         return redirect(url_for('user_views.display_routines'))
 
-    deleted_routine = delete_routine(id)
-    if deleted_routine:
-        return redirect(url_for('user_views.display_routines'))
+#     deleted_routine = delete_routine(id)
+#     if deleted_routine:
+#         return redirect(url_for('user_views.display_routines'))
 
-    return 'Failed to delete routine', 400
+#     return 'Failed to delete routine', 400
