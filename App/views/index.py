@@ -38,8 +38,9 @@ def login_page():
 # @index_views.route('/app', defaults={'workout_id': None}, methods=['GET'])
 @index_views.route('/app', methods=['GET'])
 @index_views.route('/app/<workout_id>', methods=['GET'])
+@index_views.route('/app/<workout_id>/<routine_id>', methods=['GET'])
 @jwt_required()
-def index_page(workout_id = None, routine_id = 1):
+def index_page(workout_id = 1, routine_id = 1):
     workouts = get_all_workouts()
     declared_routine = get_routine_by_id(routine_id)
 
@@ -113,11 +114,11 @@ def create_routine_route():
     if not search_routine:
         routine = create_routine(jwt_current_user, data['routine_name'])
         flash('new routine made \(￣︶￣*\))')
+        return  redirect(url_for('index_views.index_page', 1 ,id=routine.routine_id))
 
     else:
         flash("Could not make routine as it already exist")
-       
-    return redirect(url_for('index_views.index_page'))
+        return  redirect(url_for('index_views.index_page', 1 ,id=search_routine.id))
 
 # Add workout to routine
 # @index_views.route('/add_workout/<int:routine_id>', methods=['POST'])

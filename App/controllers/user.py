@@ -39,7 +39,7 @@ def find_routine(self, name):
     return None
     
 def create_routine(self, name):
-    routine = Routine(user_id = self.id, name = name)
+    routine = Routine(user_id = self.id, name = "OG name")
     db.session.add(routine)
     db.session.commit()
     return routine
