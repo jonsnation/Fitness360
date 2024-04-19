@@ -17,14 +17,15 @@ migrate = get_migrate(app)
 def initialize():
     db.drop_all()
     db.create_all()
+    null_found = False
     # Load workouts from CSV file
     with open('workout.csv', encoding='unicode_escape') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row)
+            # print(row)
             # Check for null values in the row
             if not all(row.values()):
-                print("Null value found, skipping row.")
+                null_found = True
                 continue
             workout = Workout(exercise_name=row['Exercise_Name'], 
                               exercise_image1=row['Exercise_Image'], 
@@ -36,10 +37,13 @@ def initialize():
             db.session.add(workout)
     db.session.commit()
 
-    # Print workouts to console
-    workouts = Workout.query.all()
-    for workout in workouts:
-        print(workout.get_json())
+    # # Print workouts to console
+    if null_found:
+        print("Null value(s) found and skipped")
+    print("parsed csv successfully")
+    # workouts = Workout.query.all()
+    # for workout in workouts:
+    #     print(workout.get_json())
     create_user('bob', 'bobpass')
     print('database intialized')
 
