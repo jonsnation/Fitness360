@@ -4,9 +4,21 @@
 
 {{ super() }}
 
+
 {% block content %}
+<style>
+  body {
+   background-image: url('https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?cs=srgb&dl=pexels-victorfreitas-841130.jpg&fm=jpg') !important;
+   background-size: cover; 
+   background-repeat: no-repeat;
+   background-position: center; 
+}
+
+
+</style>
+
 <main class="container" style="margin-top:100px">
-   <form class="card col s12" id="signupForm" method="POST" action="/signup" style="padding:1em">
+   <form class="card col s12" id="signupForm" method="POST" action="/signup" style="border-radius:15px; padding:1em">
 
       <div class="row">
         <div class="input-field col s12">
@@ -21,10 +33,10 @@
         </div>
       </div>
       <div class="card-action" method="POST" action="/login">
-        <input type="submit" class="blue text-white btn">
+        <input type="submit" value="Sign Up" class="blue text-white btn">
       </div>
   </form>
-  <p>Already a user? <a href="/"> Log in </a></p>
+  <p style="color:white">Already a user? <a href="/"> Log in </a></p>
 </main> 
 
 
