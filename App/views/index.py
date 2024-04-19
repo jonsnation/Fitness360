@@ -38,11 +38,34 @@ def index_page(workout_id=None):
 
 
 @index_views.route('/init', methods=['GET'])
-def init():
+def initialize():
     db.drop_all()
     db.create_all()
+    # Load workouts from CSV file
+    with open('workout.csv', encoding='unicode_escape') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            print(row)
+            # Check for null values in the row
+            if not all(row.values()):
+                print("Null value found, skipping row.")
+                continue
+            workout = Workout(exercise_name=row['Exercise_Name'], 
+                              exercise_image1=row['Exercise_Image'], 
+                              exercise_image2=row['Exercise_Image1'], 
+                              muscle_group=row['muscle_gp'], 
+                              equipment=row['Equipment'], 
+                              rating=float(row['Rating']), 
+                              description=row['Description'])
+            db.session.add(workout)
+    db.session.commit()
+
+    # Print workouts to console
+    workouts = Workout.query.all()
+    for workout in workouts:
+        print(workout.get_json())
     create_user('bob', 'bobpass')
-    return jsonify(message='db initialized!')
+    print('database intialized')
 
 @index_views.route('/health', methods=['GET'])
 def health_check():
