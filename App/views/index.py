@@ -1,6 +1,8 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify,flash
 from App.models import db, User, Workout, Routine
 from App.controllers import create_user
+from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
+
 
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
@@ -9,14 +11,18 @@ index_views = Blueprint('index_views', __name__, template_folder='../templates')
 def login_page():
     return render_template('login.html')
     
-
+# @index_views.route('/app', defaults={'workout_id': None}, methods=['GET'])
 @index_views.route('/app', methods=['GET'])
-def index_page():
+@index_views.route('/app/<workout_id>', methods=['GET'])
+@jwt_required()
+def index_page(workout_id=None):
     workouts = Workout.query.all()
-    workout_id = 1  # replace with a valid workout ID
-    workout = Workout.query.get(workout_id)
-    flash('Login Successful')
-    return render_template('index.html', workouts=workouts, workout=workout)
+    if workout_id is not None:
+        selected_workout = Workout.query.get(workout_id)
+    else:
+        selected_workout = None
+    return render_template('index.html', workouts=workouts, selected_workout=selected_workout, current_user=current_user)
+
 
 @index_views.route('/init', methods=['GET'])
 def init():

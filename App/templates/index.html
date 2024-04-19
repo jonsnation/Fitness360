@@ -5,71 +5,65 @@
 {{ super() }}
 
 {% block content %}
-    <!-- <h1>Selected Workout</h1> -->
-    {% if is_authenticated %}
-        <p> Welcome {{current_user.username}} </p>
-    {% endif %}
-    <!-- <p>Selected workout and description will appear here.</p> -->
+<style>
+    .column {
+        float: left;
+        padding: 10px;
+        height: 90vh; /* Adjust as needed */
+        overflow-y: auto;
+    }
+    .left {
+        width: 25%;
+    }
+    .middle {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .right {
+        width: 25%;
+    }
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .smaller-image {
+        width: 50%; /* Adjust as needed */
+        height: auto;
+    }
+</style>
 
-    <!-- <h2>Workouts</h2>
-{% if workouts %}
-    <div class="row">
-        {% for workout in workouts %}
-            <div class="col s12 m3">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="{{workout.exercise_image1}}" alt="Exercise Image 1">
-                        <img src="{{workout.exercise_image2}}" alt="Exercise Image 2">
-                    </div>
-                    <div class="card-content">
-                        <p>{{ workout.exercise_name }} - {{ workout.description }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <p>No workouts found.</p>
-{% endif %} -->
-
-    <!--Left side navigation bar to select an exercise-->
-    <section class="col s12 m9" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
-        <ul id="slide-out" class="sidenav sidenav-fixed">
-            <nav class="nav-extended purple" style="margin-bottom:10px">
-                <div class="nav-wrapper">
-                <a href="#" style="font-size:1.5em" class="brand-logo left">Logged in As: Bob  </a>
-                </div>
-            </nav>
-
-            <!--When View is selected, Workout details should appear for that exercise in the middle-->
-            <h5>Select An Exercise</h5>
-            <div class="input-field col s12">
-                <div class="scrollable-list collection with-scroller">
+<div class="row">
+    <div class="column left">
+        <!-- Left column content (Select an Exercise) -->
+        {% if is_authenticated %}
+            <p> Welcome {{current_user.username}} </p>
+        {% endif %}
+        <h5>Select An Exercise</h5>
+        <div class="input-field col s12">
+            <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
-                <form action="/app/{{workout.id}}" method="post">
-                    <a href="#" onclick="this.closest('form').submit();return false;" class="collection-item">{{ workout.exercise_name }}</a><br>
-                </form>
+                <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
                 {% endfor %}
-                </div>
             </div>
-        </ul>
-    </section>
+        </div>
+    </div>
 
-    <!--Main area in the middle to display selected exercise details-->
-    <main class="col s12">
-        <nav class="nav-extended purple" style="margin-bottom:10px">
-            <div class="nav-wrapper">
-            <!-- Workout Details -->
-            {% if selected_workout %}
-            <div class="card">
+    <div class="column middle">
+        <!-- Middle column content (Selected Workout) -->
+        {% if selected_workout %}
+        <div class="card">
             <div class = "card-image">
-                <img src="{{selected_workout.image1}}" alt="" class="circle responsive-img">
+                <img src="{{selected_workout.exercise_image1}}" alt="" class="circle responsive-img smaller-image">
+                <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
             </div>
             <div class="card-content">
                 <span class = "card-title">
                 {{selected_workout.exercise_name}}
                 </span>
-                <p>ID: {{selected_workout.id}}</p>
+                <p>ID: {{selected_workout.workout_id}}</p>
                 <p>Workout Name: {{selected_workout.exercise_name}}</p>
                 <p>Description: {{selected_workout.description}}</p>
                 <p>Muscle Group: {{selected_workout.muscle_group}}</p>
@@ -79,19 +73,13 @@
             <button class="btn waves-effect waves-light" type="add">
                 Add to Routine
             </button>
-            </div>
-            {% endif %}
-            </div>
-        </nav>
-    </main>
+        </div>
+        {% endif %}
+    </div>
 
-
-    <!--Right navigation bar for user's created routines -->
-    <section class="col s12 m3">
-    
-        
-
-    </section>
-    
-
+    <div class="column right">
+        <!-- Right column content (Routines) -->
+        <!-- Add your routines content here -->
+    </div>
+</div>
 {% endblock %}
