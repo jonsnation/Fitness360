@@ -61,6 +61,7 @@ def index_page(workout_id = 1, routine_id = 1):
     else:
         selected_workout = None
 
+    print(workout_routines.)
     return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user)
 
 @index_views.route('/init', methods=['GET'])
@@ -113,12 +114,13 @@ def create_routine_route():
 
     if not search_routine:
         routine = create_routine(jwt_current_user, data['routine_name'])
+        # print(routine.name)
         flash('new routine made \(￣︶￣*\))')
-        return  redirect(url_for('index_views.index_page', 1 ,id=routine.routine_id))
+        return  redirect(url_for('index_views.index_page'))
 
     else:
         flash("Could not make routine as it already exist")
-        return  redirect(url_for('index_views.index_page', 1 ,id=search_routine.id))
+        return  redirect(url_for('index_views.index_page'))
 
 # Add workout to routine
 # @index_views.route('/add_workout/<int:routine_id>', methods=['POST'])

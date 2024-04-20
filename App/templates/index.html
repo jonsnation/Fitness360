@@ -141,28 +141,33 @@
         <div class="col s12">
             <div class="row " style="height: 20vh;">
                 <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam cupiditate ipsam repellat illo! Aliquam totam corporis amet recusandae quos inventore. Praesentium maiores ab aliquid quo similique quam iure officiis laborum? -->
-                {% for workout_routine in workout_routines%}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
-                    {% if workout_routine.user_id == current_user.id%}
-                        {% if workout_routine.routine_id == selected_routine%}
-                            {% for workout in workouts %}
-                                {% if workout.id == workout_routine.workout_id %}
-                                    <div class="card" style="height: 50px;">
-                                        <div class="card-image>
-                                            <img src="{{workout.exercise_image2}}" width ="10px">
+                {% if workout_routines%}
+                    {% for workout_routine in  workout_routines%}
+                    {workout_routine.user_id}
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
+                        {% if workout_routine.user_id == current_user.id%}
+                            {% if workout_routine.routine_id == selected_routine%}
+                                {% for workout in workouts %}
+                                    {% if workout.id == workout_routine.workout_id %}
+                                        <div class="card" style="height: 50px;">
+                                            <div class="card-image>
+                                                <img src="{{workout.exercise_image2}}" width ="10px">
+                                            </div>
+                                            <div class="card-content">
+                                                <p>Name: {{workout.exercise_name}} </p>
+                                                <p>Description: {{workout.description}}</p>
+                                                <p>Rating: {{workout.rating}} </p>
+                                                <a href=""class="btn black right" type="submit" value="delete"></a>
+                                            </div>                                            
                                         </div>
-                                        <div class="card-content">
-                                            <p>Name: {{workout.exercise_name}} </p>
-                                            <p>Description: {{workout.description}}</p>
-                                            <p>Rating: {{workout.rating}} </p>
-                                            <a href=""class="btn black right" type="submit" value="delete"></a>
-                                        </div>                                            
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo accusamus veritatis nam? Delectus et ab hic quidem molestias consequatur ratione laborum. Obcaecati sed consequuntur ab autem voluptate beatae sunt vel?
+                {% endif %}
             </div>
         </div>
         <!-- <div class="col s12 m3">
