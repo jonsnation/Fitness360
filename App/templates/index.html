@@ -62,6 +62,10 @@
             <a href="#" style="font-size:1.2em" class="brand-logo">Let's get ripped: {{current_user.username}} </a>
             </div>
         </nav>
+
+        <form class="row" method="POST" action="" >
+                                        
+        </form>
         
         <!-- Left column content (Select an Exercise) -->
         <h5>Select An Exercise</h5>
@@ -149,10 +153,8 @@
                             <tbody>
                                 {% for routine in routines%}
                                     <p>{{routine.name}}</p>
-                                    <form class="row" method="POST" action="" >
-                                        <input type="text" name="name" placeholder="Name" id=""/>
-                                        <input class = "btn red left" type="submit" value="Add" id=""/>
-                                    </form>
+                                    <input type="text" name="name" placeholder="Name" id=""/>
+                                    <input class = "btn red left" type="submit" value="Add" id=""/>
                                 {% endfor %}
                             </tbody>
                         </div>
