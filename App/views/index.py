@@ -66,7 +66,7 @@ def index_page(workout_id = 1, routine_id = 1):
     print("?")
     return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user, user_routines=user_routines)
 
-@index_views.route('app/view/<routine_id>')
+@index_views.route('/app/view/<routine_id>')
 @jwt_required()
 def view_routine_page(routine_id=1):
     workouts = get_all_workouts()
@@ -135,8 +135,8 @@ def create_routine_route():
         return  redirect(url_for('index_views.index_page'))
 
 # Add workout to routine
-@index_views.route('/add_workout/<int:routine_id>', methods=['POST'])
-@jwt_required
+@index_views.route('/addworkout/<int:routine_id>/<int:workout_id>', methods=['GET'])
+@jwt_required()
 def add_workout(routine_id, workout_id):
     routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
 
