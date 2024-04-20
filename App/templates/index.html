@@ -140,8 +140,27 @@
         <h4 style="height: min-content;">{{current_user.username}}'s Routines:</h4>
         <div class="col s12">
             <div class="row " style="height: 20vh;">
+                {% for routine in routines%}
+                <div class="col s12 m7">
+                    <!-- <h2 class="header">Horizontal Card</h2> -->
+                    <div class="card horizontal">
+                      <div class="card-stacked">
+                        <div class="card-content">
+                            <p>WOOOOOORK {{routine.name}}</p>
+                        </div>
+                        <div class="card-action">
+                            <form class="row" method="POST" action="" >
+                                <input type="text" name="name" placeholder="Name" id=""/>
+                                <input class = "btn red left" type="submit" value="CAPTURE" id=""/>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                {% endfor %}
+
                 <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam cupiditate ipsam repellat illo! Aliquam totam corporis amet recusandae quos inventore. Praesentium maiores ab aliquid quo similique quam iure officiis laborum? -->
-                {% if workout_routines%}
+                <!-- {% if workout_routines%}
                     {% for workout_routine in  workout_routines%}
                     {workout_routine.user_id}
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
@@ -167,7 +186,7 @@
                     {% endfor %}
                 {% else %}
                     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo accusamus veritatis nam? Delectus et ab hic quidem molestias consequatur ratione laborum. Obcaecati sed consequuntur ab autem voluptate beatae sunt vel?
-                {% endif %}
+                {% endif %} -->
             </div>
         </div>
         <!-- <div class="col s12 m3">
