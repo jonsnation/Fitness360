@@ -6,7 +6,8 @@ class WorkoutRoutine(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.workout_id'), nullable=False)
 
-    def __init__(self, user_id, workout_id, routine_id):
+    def __init__(self, name, user_id, workout_id, routine_id):
+        self.name = name
         self.user_id = user_id
         self.workout_id = workout_id
         self.routine_id = routine_id
@@ -14,6 +15,7 @@ class WorkoutRoutine(db.Model):
     def get_json(self):
         return {
             "id": self.id,
+            "name": self.name
             "user_id": self.user_id,
             "workout_id": self.workout_id,
             "routine_id": self.routine_id

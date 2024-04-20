@@ -38,23 +38,18 @@ def login_page():
 # @index_views.route('/app', defaults={'workout_id': None}, methods=['GET'])
 @index_views.route('/app', methods=['GET'])
 @index_views.route('/app/<workout_id>', methods=['GET'])
-@index_views.route('/app/<workout_id>/<routine_id>', methods=['GET'])
+@index_views.route('/app/<routine_id>', methods=['GET'])
 @jwt_required()
-def index_page(workout_id = 1, routine_id = 1):
+def index_page(workout_id = 1):
     workouts = get_all_workouts()
+    routine = create_routine("back day", 1)
+    add_selected_workout_to_routine(routine, 5)
+    add_selected_workout_to_routine(routine, 6)
+    add_selected_workout_to_routine(routine, 1)
+    routines = get_user_routines(1)
     declared_routine = get_routine_by_id(routine_id)
-
-    if declared_routine:
-        routines = get_all_routines()
-        workout_routines = get_all_workout_routines()
-        selected_routine = get_routine_by_id(declared_routine.routine_id)
-        user_routines = get_all_workouts_in_routines(routine_id)
-    else:
-        declared_routine = create_routine_declaration(jwt_current_user)
-        routines = get_all_routines()
-        workout_routines = get_all_workout_routines()
-        selected_routine = get_routine_by_id(declared_routine.routine_id)
-        user_routines = get_all_workouts_in_routines(declared_routine.routine_id)
+    
+    
 
     if workout_id is not None:
         selected_workout = Workout.query.get(workout_id)
@@ -107,26 +102,23 @@ def health_check():
 # Create routines
 @index_views.route('/app/create', methods=['POST'])
 @jwt_required()
-def create_routine_route():
-    data = request.form
-    search_routine = find_routine(jwt_current_user, data['routine_name'])# not essential but up to y'all
+def create_routine_route():   
+    try:
+        data = request.form
+        routine_name = data["name"]
+        routine = create_routine(current_user.id, routine_name)
+        if  routine == create_routine(current_user.id, routine_name):
+            routine_workouts = request.form.getlist('selected_workouts[]')
+            for workout_id in routine_workouts:
+                add_selected_workout_to_routine(routine, workout_id)
+            flash('New routine created!')
+        else: 
+            flash('Error creating routine')
+    except Exception as e:
+        flash(f'Error creating routine: {str(e)}', 'error')
+    return redirect(url_for('index_views.index_page'))
 
-    if not search_routine:
-        routine = create_routine(jwt_current_user, data['routine_name'])
-        flash('new routine made \(￣︶￣*\))')
-        return  redirect(url_for('index_views.index_page', 1 ,id=routine.routine_id))
 
-    else:
-        flash("Could not make routine as it already exist")
-        return  redirect(url_for('index_views.index_page', 1 ,id=search_routine.id))
-
-# Add workout to routine
-# @index_views.route('/add_workout/<int:routine_id>', methods=['POST'])
-# @jwt_required
-# def add_workout(routine_id):
-#     workout_id = request.form.get('workout_id')
-#     add_workout_to_routine(routine_id, workout_id)
-#     return redirect(url_for('user_views.edit_routine2', id=routine_id))
 
 # # View/Edit routine
 # @routine_views.route('/routine/edit/<int:id>', methods=['GET', 'POST'])

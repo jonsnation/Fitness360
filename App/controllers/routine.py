@@ -1,9 +1,10 @@
 from App.models import Routine
 from App.database import db
 
+   return routine
 
-def create_routine2(name, description, user_id):
-    routine = Routine(name=name, description=description, user_id=user_id)
+def create_routine(name, user_id):
+    routine = Routine(name = name, user_id=user_id)
     db.session.add(routine)
     db.session.commit()
     return routine
