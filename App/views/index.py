@@ -47,7 +47,7 @@ def index_page(workout_id = 1, routine_id = 1):
     declared_routine = get_routine_by_id(routine_id)
     routines = get_user_routines(jwt_current_user.id)
     user_routines = get_all_workouts_in_routines(routine_id)
-    
+
     if declared_routine:
         workout_routines = get_all_workout_routines()
         selected_routine = get_routine_by_id(declared_routine.routine_id)
@@ -71,14 +71,12 @@ def index_page(workout_id = 1, routine_id = 1):
 @index_views.route('/app/view/<routine_id>')
 @jwt_required()
 def view_routine_page(routine_id=1):
-    workouts = get_all_workouts()
     selected_routine1= get_routine_by_id(routine_id)
-    routines = get_user_routines()
 
-    if selected_routine is None:
-        return redirect(url_for(index_views.index_page))
+    if selected_routine1 is None:
+        return redirect(url_for('index_views.index_page'))
 
-    return render_template('index.html', workouts=workouts, selected_routine1=selected_routine1, routines=routines)
+    return redirect(url_for('index_views.index_page', selected_routine1=selected_routine1))
 
     
 @index_views.route('/init', methods=['GET'])
