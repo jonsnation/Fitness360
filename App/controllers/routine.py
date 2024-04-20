@@ -1,7 +1,6 @@
 from App.models import Routine
 from App.database import db
 
-   return routine
 
 def create_routine(name, user_id):
     routine = Routine(name = name, user_id=user_id)
