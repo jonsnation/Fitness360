@@ -102,11 +102,7 @@
         <div class="input-field col s12">
             <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
-                    {% if workout.id == selected_workout.id %}
-                        <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
-                    {% else %}
                         <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
-                    {% endif %}
                 {% endfor %}
             </div>
         </div>
