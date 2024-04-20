@@ -104,44 +104,44 @@ width: 50%;
                 </div>
                 {% endif %}
             </div>
-            <!-- Right most Column  -->
+            <!-- Right most middle Column  -->
             <div class="column">
+                <!-- Middle right column content (Selected Routine) -->
                 <div class="card" style="width:auto;">
-                    <div class="card-actions">
-                        {% if workout_routines%}
-                            {% for workout_routine in  workout_routines%}
-                            {workout_routine.user_id}
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
-                                {% if workout_routine.user_id == current_user.id%}
-                                    {% if workout_routine.routine_id == selected_routine%}
-                                        {% for workout in workouts %}
-                                            {% if workout.id == workout_routine.workout_id %}
-                                                <div class="card" style="height: 50px;">
-                                                    <div class="card-image>
-                                                        <img src="{{workout.exercise_image2}}" width ="10px">
+                   
+                        <!-- {% if workout_routines%}
+                            <div class="card-actions">
+                                {% for workout_routine in  workout_routines%}
+                                {workout_routine.user_id}
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
+                                    {% if workout_routine.user_id == current_user.id%}
+                                        {% if workout_routine.routine_id == selected_routine%}
+                                            {% for workout in workouts %}
+                                                {% if workout.id == workout_routine.workout_id %}
+                                                    <div class="card" style="height: 50px;">
+                                                        <div class="card-image>
+                                                            <img src="{{workout.exercise_image2}}" width ="10px">
+                                                        </div>
+                                                        <div class="card-content">
+                                                            <p>Name: {{workout.exercise_name}} </p>
+                                                            <p>Description: {{workout.description}}</p>
+                                                            <p>Rating: {{workout.rating}} </p>
+                                                            <a href=""class="btn black right" type="submit" value="delete"></a>
+                                                        </div>                                            
                                                     </div>
-                                                    <div class="card-content">
-                                                        <p>Name: {{workout.exercise_name}} </p>
-                                                        <p>Description: {{workout.description}}</p>
-                                                        <p>Rating: {{workout.rating}} </p>
-                                                        <a href=""class="btn black right" type="submit" value="delete"></a>
-                                                    </div>                                            
-                                                </div>
-                                            {% endif %}
-                                        {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            <div class="card-content" style="width: 20em; height: 40em;">
-                                <h1>Select a Routine to see the list of routine workouts</h1>
-                            </div>
-                        {% endif %}
+                                {% endfor %}
+                            {% else %}
+                        </div>
+                        {% endif %} -->
                         <!-- <form method = "POST" action = "/add_workout/{{workouts.workout_id}}"> -->
                             <!-- /routine/create -->
                             <!-- <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE"> -->
                         <!-- </form> -->
-                    </div>            
+                                
                 </div>
             </div>
             <!-- Pop up view -->
@@ -184,6 +184,7 @@ width: 50%;
                                     <p>{{routine.name}}</p>
                                     <!-- <input type="text" name="name" placeholder="Name" id=""/> -->
                                     <input class = "btn red left" type="submit" value="Add" id="createBtn" style="margin-left:0"/>
+                                    <input class = "btn red left" type="submit" value="View" id="{{selected_routine}}" style="margin-left:0"/>
                                     <input class = "btn red left" type="submit" value="Edit" id="createBtn" style="margin-left:0"/>
                                     <input class = "btn red left" type="submit" value="Delete" id="createBtn" style="margin-left:0"/>
                                 {% endfor %}

@@ -31,6 +31,30 @@ from App.controllers import (
 
 index_views = Blueprint('index_views', __name__, template_folder='../templates')
 
+@index_views.route('/init', methods=['GET'])
+def initialize():
+    db.drop_all()
+    db.create_all()
+    null_found = False
+    # Load workouts from CSV file
+    with open('workout.csv', encoding='unicode_escape') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            print(row)
+            # Check for null values in the row
+            if not all(row.values()):
+                null_found = True
+                continue
+            workout = Workout(exercise_name=row['Exercise_Name'], 
+                              exercise_image1=row['Exercise_Image'], 
+                              exercise_image2=row['Exercise_Image1'], 
+                              muscle_group=row['muscle_gp'], 
+                              equipment=row['Equipment'], 
+                              rating=float(row['Rating']), 
+                              description=row['Description'])
+            db.session.add(workout)
+    db.session.commit()
+
 @index_views.route('/', methods=['GET'])
 def login_page():
     return render_template('login.html')
@@ -66,29 +90,7 @@ def index_page(workout_id = 1, routine_id = 1):
     print("?")
     return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user)
 
-@index_views.route('/init', methods=['GET'])
-def initialize():
-    db.drop_all()
-    db.create_all()
-    null_found = False
-    # Load workouts from CSV file
-    with open('workout.csv', encoding='unicode_escape') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            print(row)
-            # Check for null values in the row
-            if not all(row.values()):
-                null_found = True
-                continue
-            workout = Workout(exercise_name=row['Exercise_Name'], 
-                              exercise_image1=row['Exercise_Image'], 
-                              exercise_image2=row['Exercise_Image1'], 
-                              muscle_group=row['muscle_gp'], 
-                              equipment=row['Equipment'], 
-                              rating=float(row['Rating']), 
-                              description=row['Description'])
-            db.session.add(workout)
-    db.session.commit()
+
 
     # # Print workouts to console
     if null_found:
