@@ -61,7 +61,7 @@ def index_page(workout_id = 1, routine_id = 1):
     else:
         selected_workout = None
 
-    print(workout_routines.)
+    # print(workout_routines)
     return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user)
 
 @index_views.route('/init', methods=['GET'])

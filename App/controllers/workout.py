@@ -9,3 +9,4 @@ def get_workout_by_id(id):
 
 def get_workout_by_name(name):
     return Workout.query.filter_by(name=name).first()
+    

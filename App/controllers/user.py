@@ -30,42 +30,42 @@ def update_user(id, username):
         db.session.add(user)
         return db.session.commit()
     return None
-    
-def find_routine(self, name):
-    found = Routine.query.filter_by(name=name, user_id = self.id).first()
 
-    if found:
-        return found
+def create_routine_declaration(self):
+    declaration = Routine(self.id, 'Basic Routine')
+    db.session.add(declaration)
+    db.session.commit()
+    return declaration  
 
-    return None
-    
 def create_routine(self, name):
     routine = Routine(user_id = self.id, name = name)
     db.session.add(routine)
     db.session.commit()
     return routine
 
-def create_routine_declaration(self):
-    declaration = Routine(self.id, 'Basic Routine')
-    db.session.add(declaration)
-    db.session.commit()
-    return declaration
+def find_routine(self, name):
+    find = Routine.query.filter_by(user_id=self.id, name=name).first()
+    if find:
+        return find
+    else:
+        return None
+    return None
     
 def find_workout (self, routine_id, workout_id):
-    find = RoutineWorkout.query.filter_by(user_id = self.id, workout_id = workout_id, routine_id = routine_id).first()
+    find = WorkoutRoutine.query.filter_by(user_id = self.id, workout_id = workout_id, routine_id = routine_id).first()
     if find:
         return False
     else:
         return True
 
 def add_workout_to_routine(self, routine_id, workout_id):
-    workout_routine = RoutineWorkout(self.id, workout_id = workout_id, routine_id = routine_id)
+    workout_routine = WorkoutRoutine(self.id, routine_id=routine_id, workout_id=workout_id)
     db.session.add(workout_routine)
     db.session.commit()
     return workout_routine
 
 #check
 def remove_workout_from_routine(self, routine_id, workout_id):
-    workout_routine = RoutineWorkout.query.filter_by(user_id=self.id, routine_id=routine_id, workout_id=workout_id)
+    workout_routine =WorkoutRoutine.query.filter_by(user_id=self.id, routine_id=routine_id, workout_id=workout_id)
     db.session.commit()
     return None

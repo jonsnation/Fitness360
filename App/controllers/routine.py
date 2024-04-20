@@ -15,7 +15,7 @@ def get_routine_by_name(name):
     return Routine.query.filter_by(name=name).first()
 
 def get_routine_by_id(id):
-    return Routine.query.filter_by(id=id).first()
+    return Routine.query.filter_by(routine_id=id).first()
 
 def get_user_routines(user_id):
     return Routine.query.filter_by(user_id=user_id).all()
