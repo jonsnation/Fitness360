@@ -14,6 +14,7 @@ from App.controllers import (
     create_routine,
     create_routine_declaration,
     find_routine,
+    find_workout,
     get_all_routines,
     get_routine_by_name,
     get_routine_by_id,
@@ -45,11 +46,12 @@ def index_page(workout_id = 1, routine_id = 1):
     workouts = get_all_workouts()
     declared_routine = get_routine_by_id(routine_id)
     routines = get_user_routines(jwt_current_user.id)
-
+    user_routines = get_all_workouts_in_routines(routine_id)
+    
     if declared_routine:
         workout_routines = get_all_workout_routines()
         selected_routine = get_routine_by_id(declared_routine.routine_id)
-        user_routines = get_all_workouts_in_routines(routine_id)
+        
     else:
         declared_routine = create_routine_declaration(jwt_current_user)
         workout_routines = get_all_workout_routines()
