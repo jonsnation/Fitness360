@@ -83,32 +83,32 @@
 <div class="row">
     <div class="column middle center">
         <!--routine form-->
-                <div id="addRoutineModal" class="modal" style="display:none;">
-                    <div class="modal-content">
-                        <h4>Create a Routine</h4>
-                        <form name="routine" id="routineForm" method="POST" action="/app/create">
-                            <div class="input-field">
-                                <input id="name" type="text" name="name" required>
-                                <label for="name">Routine Name</label>
-                            </div>
-                            <!-- Exercise selection -->
-                            <div class="input-field">
-                                <select id="exerciseSelect" name="selected_workouts[]" multiple>
-                                    <option value="" disabled selected></option>
-                                    {% for workout in workouts %}
-                                        <option value="{{ workout.workout_id }}">{{ workout.exercise_name }}</option>
-                                    {% endfor %}
-                                </select>
-                                <label for="exerciseSelect">Select Exercise(s)</label>
-                            </div>
-                            <button class="btn waves-effect waves-light" type="button" id="addExerciseBtn">Add Exercise</button>
-                            <button class="btn waves-effect waves-light" type="submit">Create</button>
-                        </form>
+        <div id="addRoutineModal" class="modal" style="display:none;">
+            <div class="modal-content">
+            <h4>Create a Routine</h4>
+            <form name="routine" id="routineForm" method="POST" action="/app/create">
+                <div class="input-field">
+                <input id="name" type="text" name="name" required>
+                <label for="name">Routine Name</label>
                     </div>
-                    <div class="modal-footer">
-                    <button class="modal-close btn-flat" id="closeModalBtn">Cancel</button>
-                    </div>
-                </div>
+                    <!-- Exercise selection -->
+                        <div class="input-field">
+                            <select id="exerciseSelect" name="selected_workouts[]" multiple>
+                                <option value="" disabled selected></option>
+                                {% for workout in workouts %}
+                                <option value="{{ workout.workout_id }}">{{ workout.exercise_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="exerciseSelect">Select Exercise(s)</label>
+                        </div>
+                        <button class="btn waves-effect waves-light" type="button" id="addExerciseBtn">Add Exercise</button>
+                        <button class="btn waves-effect waves-light" type="submit">Create</button>
+            </form>
+            </div>
+            <div class="modal-footer">
+            <button class="modal-close btn-flat" id="closeModalBtn">Cancel</button>
+            </div>
+    </div>
        <!-- Middle column content (Selected Workout) -->
        {% if selected_workout %}
        <div class="card">
