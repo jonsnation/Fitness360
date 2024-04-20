@@ -70,13 +70,14 @@ def index_page(workout_id = 1, routine_id = 1):
 
 @index_views.route('/app/view/<routine_id>')
 @jwt_required()
-def view_routine_page(routine_id=1):
-    selected_routine1= get_routine_by_id(routine_id)
+def view_routine_page(routine_id):
+    selected_routine= get_routine_by_id(routine_id)
 
-    if selected_routine1 is None:
+    if selected_routine is None:
+        flash('Routine not valid.')
         return redirect(url_for('index_views.index_page'))
-
-    return redirect(url_for('index_views.index_page', selected_routine1=selected_routine1))
+    flash('Here is your routine.')
+    return render_template('index_views.index_page', selected_routine=selected_routine)
 
     
 @index_views.route('/init', methods=['GET'])
@@ -107,9 +108,6 @@ def initialize():
     if null_found:
         print("Null value(s) found and skipped")
     print("parsed csv successfully")
-    # workouts = Workout.query.all()
-    # for workout in workouts:
-    #     print(workout.get_json())
     create_user('bob', 'bobpass')
     print('database intialized')
 
@@ -148,23 +146,6 @@ def add_workout(routine_id, workout_id):
         flash('Workout not added')
         return  redirect(url_for('index_views.index_page'))
 
-# # View/Edit routine
-# @routine_views.route('/routine/edit/<int:id>', methods=['GET', 'POST'])
-# @jwt_required
-# def edit_routine2(id):
-#     routine = get_routine(id)
-#     if not routine or routine.user_id != jwt_current_user.id:
-#         return redirect(url_for('user_views.display_routines'))
-
-#     if request.method == 'POST':
-#         name = request.form.get('name')
-#         description = request.form.get('description')
-#         updated_routine = update_routine(id, name=name, description=description)
-#         if updated_routine:
-#             return redirect(url_for('user_views.display_routines'))
-
-#     workouts = get_all_workouts()
-#     return render_template('routine_form.html', form_action=url_for('user_views.edit_routine2', id=id), routine=routine, workouts=workouts)
 
 # # Delete routine
 # @routine_views.route('/routine/delete/<int:id>', methods=['POST'])
