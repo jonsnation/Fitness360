@@ -113,12 +113,8 @@ def health_check():
 def create_routine_route():
     data = request.form
     search_routine = find_routine(jwt_current_user, data['routine_name'])# not essential but up to y'all
-
-    # print(search_routine)
-
     if not search_routine:
         routine = create_routine(jwt_current_user, data['routine_name'])
-        print(routine.name)
         flash('new routine made \(￣︶￣*\))')
         return  redirect(url_for('index_views.index_page'))
     else:
@@ -126,12 +122,18 @@ def create_routine_route():
         return  redirect(url_for('index_views.index_page'))
 
 # Add workout to routine
-# @index_views.route('/add_workout/<int:routine_id>', methods=['POST'])
-# @jwt_required
-# def add_workout(routine_id):
-#     workout_id = request.form.get('workout_id')
-#     add_workout_to_routine(routine_id, workout_id)
-#     return redirect(url_for('user_views.edit_routine2', id=routine_id))
+@index_views.route('/add_workout/<int:routine_id>', methods=['POST'])
+@jwt_required
+def add_workout(routine_id, workout_id):
+    routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
+
+    if routine_exercise:
+        add_workout_to_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
+        flash('Workout added')
+        return  redirect(url_for('index_views.index_page'))
+    else:
+        flash('Workout not added')
+        return  redirect(url_for('index_views.index_page'))
 
 # # View/Edit routine
 # @routine_views.route('/routine/edit/<int:id>', methods=['GET', 'POST'])
