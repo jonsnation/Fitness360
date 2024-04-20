@@ -137,10 +137,10 @@
             <select id="exercise-dropdown">
                 <!-- Dropdown options for exercises will be added dynamically -->
                 {% for workout in workouts %}
-                <option href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
+                <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
                 {% endfor %}
             </select>
-            <button type="button" id="add-exercise-btn" action="/add_workout/{{routine_id}}">Add Exercise</button>
+            <button type="button" id="add-exercise-btn">Add Exercise</button>
             <button type="submit" id="finish-btn">Finish</button>
         </form>
         <button type="button" id="close-popup-btn">Close</button>
@@ -168,24 +168,24 @@
             </div>           
         </div>
         {% endif %}
-    </div>
-    {%if selected_routine1 %}
-    <p>Routine {{selected_routine1.exercise_name}}</p>
-    {% for workout in selected_routine1.workout %}
-    <p>{{workout.workout_id}}</p>
-    {% endfor %}
-    {% endif %}
-    <div>
-
+        <div class="card" id="routine-info">
+            {%if selected_routine1 %}
+            <a>Routine: {{selected_routine1.name}}</a>
+            {% for workout in selected_routine1.workout %}
+            <p>{{workout.workout_id}}</p>
+            {% endfor %}
+            {% endif %}
+            <div>
+        </div>
+        </div>
     </div>
 
     <!-- Right Middle Column  -->
 </div>
 
-       
-   
+
 <section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh; padding-right: 15px; padding-left: 15px;">
-    
+
   <!-- Right column content (Routines) -->
 <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top: 0x; overflow-y: scroll; width: 25vw;">
     <nav class="nav-extended custom-black">
@@ -223,6 +223,15 @@
 </section>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const addExerciseBtn = document.getElementById('add-exercise-btn');
+    addExerciseBtn.addEventListener('click', function () {
+        const selectedWorkoutId = document.getElementById('exercise-dropdown').value;
+        const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
+        const url = `/addworkout/${selectedRoutineId}/${selectedWorkoutId}`;
+        window.location.href = url;
+    });
+});
     document.addEventListener('DOMContentLoaded', function () {
         // Get elements
         const popup = document.getElementById('routine-popup');
