@@ -6,212 +6,223 @@
 
 {% block content %}
 <style>
-         .custom-black {
-    background-color: #1c1c1c; 
+        .custom-black {
+background-color: #1c1c1c; 
 }
-    .container{
-        padding: 10px;
-        background-color: rgb(216, 212, 212);
-        display: flex;
-        align-items: center;
-    }
-    .column {
-        float: left;
-        padding: 10px;
-        height: 90vh; /* Adjust as needed */
-        overflow-y: auto;
-    }
-    .left {
-        width: 25%;
-    }
-    .row {
-    display: flex; 
-    justify-content: center; 
+.container{
+    padding: 10px;
+    background-color: rgb(216, 212, 212);
+    display: flex;
     align-items: center;
-    height: 100vh;
+}
+.column {
+    float: left;
+    padding: 10px;
+    height: 90vh; /* Adjust as needed */
+    overflow-y: auto;
+}
+.left {
+    width: 25%;
+}
+.row {
+display: flex; 
+justify-content: center; 
+align-items: center;
+height: 100vh;
 }
 
 
 .column.middle {
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    flex-direction: column;
-    width: 50%; 
+display: flex; 
+justify-content: center; 
+align-items: center; 
+flex-direction: column;
+width: 50%; 
 }
-    .right {
-        width: 25%;
-    }
-    .row:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-    .smaller-image {
-        width: 50%; /* Adjust as needed */
-        height: auto;
-    }
+.right {
+    width: 25%;
+}
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.smaller-image {
+    width: 50%; /* Adjust as needed */
+    height: auto;
+}
 </style>
 
 
 <!--Left side navigation bar to select an exercise-->
-<section  style="margin-top: 5px; overflow-y:scroll; height: 86vh">
-    <ul id="slide-out" class="sidenav sidenav-fixed">
-        <nav class="nav-extended custom-black" style="margin-bottom:10px">
-            <div class="nav-wrapper">
-            <a href="#" style="font-size:1.2em" class="brand-logo">Let's get ripped: {{current_user.username}} </a>
+<body>
+    <!-- Left Bar  -->
+    <section  style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+        <ul id="slide-out" class="sidenav sidenav-fixed">
+            <nav class="nav-extended custom-black" style="margin-bottom:10px">
+                <div class="nav-wrapper">
+                <a href="#" style="font-size:1.2em" class="brand-logo">Let's get ripped: {{current_user.username}} </a>
+                </div>
+            </nav>        
+            <!-- Left column content (Select an Exercise) -->
+            <h5>Select An Exercise</h5>
+            <div class="input-field col s12">
+                <div class="scrollable-list collection with-scroller">
+                    {% for workout in workouts %}
+                        {% if workout.id == selected_workout.id %}
+                            <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
+                        {% else %}
+                            <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
-        </nav>
-
-        <form class="row" method="POST" action="" >
-                                        
-        </form>
+                
+        </ul>
+    </section>
+    <!-- Middle Section -->
+    <section class="center" style="margin-top: 5px; height: 86vh;">
+        <div class="row">
+            <!-- Left most middle Column  -->
+            <div class="column">
+                <!-- Middle left column content (Selected Workout) -->
+                {% if selected_workout %}
+                <div class="card">
+                    <div class = "card-image">
+                        <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
+                    </div>
+                    <div class="card-content">
+                        <span class = "card-title">
+                        {{selected_workout.exercise_name}}
+                        </span>
+                        <p>Workout Name: {{selected_workout.exercise_name}}</p>
+                        <p>Description: {{selected_workout.description}}</p>
+                        <p>Muscle Group: {{selected_workout.muscle_group}}</p>
+                        <p>Equipment: {{selected_workout.equipment}}</p>
+                        <p>Rating: {{selected_workout.rating}}</p>
+                    </div>                    
+                </div>
+                {% endif %}
+            </div>
+            <!-- Right most Column  -->
+            <div class="column">
+                <div class="card" style="width:auto;">
+                    <div class="card-actions">
+                        {% if workout_routines%}
+                            {% for workout_routine in  workout_routines%}
+                            {workout_routine.user_id}
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
+                                {% if workout_routine.user_id == current_user.id%}
+                                    {% if workout_routine.routine_id == selected_routine%}
+                                        {% for workout in workouts %}
+                                            {% if workout.id == workout_routine.workout_id %}
+                                                <div class="card" style="height: 50px;">
+                                                    <div class="card-image>
+                                                        <img src="{{workout.exercise_image2}}" width ="10px">
+                                                    </div>
+                                                    <div class="card-content">
+                                                        <p>Name: {{workout.exercise_name}} </p>
+                                                        <p>Description: {{workout.description}}</p>
+                                                        <p>Rating: {{workout.rating}} </p>
+                                                        <a href=""class="btn black right" type="submit" value="delete"></a>
+                                                    </div>                                            
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <div class="card-content" style="width: 20em; height: 40em;">
+                                <h1>Select a Routine to see the list of routine workouts</h1>
+                            </div>
+                        {% endif %}
+                        <!-- <form method = "POST" action = "/add_workout/{{workouts.workout_id}}"> -->
+                            <!-- /routine/create -->
+                            <!-- <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE"> -->
+                        <!-- </form> -->
+                    </div>            
+                </div>
+            </div>
+            <!-- Pop up view -->
+            
         
-        <!-- Left column content (Select an Exercise) -->
-        <h5>Select An Exercise</h5>
-        <div class="input-field col s12">
-            <div class="scrollable-list collection with-scroller">
-                {% for workout in workouts %}
-                    {% if workout.id == selected_workout.id %}
-                        <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
-                    {% else %}
-                        <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
-                    {% endif %}
-                {% endfor %}
-            </div>
         </div>
-            
-    </ul>
-</section>
-    
-<div class="row">
-    <div class="column middle center">
-
-
-        <!-- Middle column content (Selected Workout) -->
-        {% if selected_workout %}
-        <div class="card">
-            <div class = "card-image">
-                <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
-            </div>
-            <div class="card-content">
-                <span class = "card-title">
-                {{selected_workout.exercise_name}}
-                </span>
-                <p>Workout Name: {{selected_workout.exercise_name}}</p>
-                <p>Description: {{selected_workout.description}}</p>
-                <p>Muscle Group: {{selected_workout.muscle_group}}</p>
-                <p>Equipment: {{selected_workout.equipment}}</p>
-                <p>Rating: {{selected_workout.rating}}</p>
-            </div>
-
-            <div class="card-actions">
-                <form method = "POST" action = "/add_workout/{{workouts.workout_id}}">
-                    <!-- /routine/create -->
-                    <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE">
-                </form>
-            </div>
-            
-        </div>
-        {% endif %}
-    </div>
-</div>
-
-       
-   
-<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
-    
+    </section>
+     <!-- Right Bar -->
+    <section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+        
         <!-- Right column content (Routines) -->
-         <!-- Add your routines content here -->
-
+            <!-- Add your routines content here -->
+    
         <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top:65px">
             <nav class="nav-extended custom-black">
                 <div class="nav-wrapper">
                 <a href="#" style="font-size:1.2em" class="brand-logo">{{current_user.username}}'s Routines </a>
                 </div>
             </nav>
-
-             <!-- Create Routine here -->
-         <h6>Create a routine</h6>
-         <form class="row" style="height: min-content;" method="POST" action="/app/create">
+    
+                <!-- Create Routine here -->
+            <h6>Create a routine</h6>
+            <form class="row" style="height: min-content;" method="POST" action="/app/create">
                 <div class="card col s12" style=" height: 20vh">
                     <input id="routine_name"  method="POST" type="text" name="routine_name">
                     <label for="name_inline">Name</label>
                     <input class = "btn grey right bottom" type="submit" value="SUBMIT" id="createBtn"/>
                 </div>
-         </form>
-
-        
-        <!-- <div class="col s12 m3"> -->
+            </form>
+    
             <div class="row " style="height: 20vh;">
                 <div class="col s12">
                     <table class="responsive-table">
                         <div class="card-title">
                             <thead>
-                                <th>Routines</th>
+                                <th></th>
                             </thead>
                             <tbody>
                                 {% for routine in routines%}
                                     <p>{{routine.name}}</p>
-                                    <input type="text" name="name" placeholder="Name" id=""/>
-                                    <input class = "btn red left" type="submit" value="Add" id=""/>
+                                    <!-- <input type="text" name="name" placeholder="Name" id=""/> -->
+                                    <input class = "btn red left" type="submit" value="Add" id="createBtn" style="margin-left:0"/>
+                                    <input class = "btn red left" type="submit" value="Edit" id="createBtn" style="margin-left:0"/>
+                                    <input class = "btn red left" type="submit" value="Delete" id="createBtn" style="margin-left:0"/>
                                 {% endfor %}
                             </tbody>
                         </div>
                     </table>
-                </div>
-                
-                <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam cupiditate ipsam repellat illo! Aliquam totam corporis amet recusandae quos inventore. Praesentium maiores ab aliquid quo similique quam iure officiis laborum? -->
-                <!-- {% if workout_routines%}
-                    {% for workout_routine in  workout_routines%}
-                    {workout_routine.user_id}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
-                        {% if workout_routine.user_id == current_user.id%}
-                            {% if workout_routine.routine_id == selected_routine%}
-                                {% for workout in workouts %}
-                                    {% if workout.id == workout_routine.workout_id %}
-                                        <div class="card" style="height: 50px;">
-                                            <div class="card-image>
-                                                <img src="{{workout.exercise_image2}}" width ="10px">
-                                            </div>
-                                            <div class="card-content">
-                                                <p>Name: {{workout.exercise_name}} </p>
-                                                <p>Description: {{workout.description}}</p>
-                                                <p>Rating: {{workout.rating}} </p>
-                                                <a href=""class="btn black right" type="submit" value="delete"></a>
-                                            </div>                                            
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo accusamus veritatis nam? Delectus et ab hic quidem molestias consequatur ratione laborum. Obcaecati sed consequuntur ab autem voluptate beatae sunt vel?
-                {% endif %} -->
+                </div>            
             </div>
-        <!-- </div> -->
-        <!-- <div class="col s12 m3">
-
-            Test 
-            {% if current_user.routine%}
-            <h3>ROUTINES</h3>
-                {% for routines in current_user.routine%}
-                <div class="card">
-                    <div class="card-content">
-                    <p>Testing Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium corporis ut tempore illum ad minima et fugiat, in animi voluptate, voluptatibus dolores magnam laborum deserunt! Sed minus exercitationem maiores expedita?</p>
-                    <p>Rating{{review.rating}}</p>
-                    <span class="card-title">Author:</span>
-                    </div>
-                </div>
-                {% endfor %}
-            {% else %}
-            <h2>Add a routine to see routines</h2>
-            {% endif %}
-        </div> -->
         </ul>
-</section>
+    </section>
+</body>
+
        
-        
+<!-- <script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks the button, open the modal 
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+    
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+</script>  -->
 
 {% endblock %}
