@@ -63,9 +63,6 @@
             </div>
         </nav>
 
-        <form class="row" method="POST" action="" >
-                                        
-        </form>
         
         <!-- Left column content (Select an Exercise) -->
         <h5>Select An Exercise</h5>
@@ -85,7 +82,8 @@
 </section>
     
 <div class="row">
-    <div class="column middle center">
+    <!-- Left middle Column  -->
+    <div class="column">
 
 
         <!-- Middle column content (Selected Workout) -->
@@ -103,18 +101,33 @@
                 <p>Muscle Group: {{selected_workout.muscle_group}}</p>
                 <p>Equipment: {{selected_workout.equipment}}</p>
                 <p>Rating: {{selected_workout.rating}}</p>
-            </div>
-
-            <div class="card-actions">
-                <form method = "POST" action = "/add_workout/{{workouts.workout_id}}">
-                    <!-- /routine/create -->
-                    <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE">
-                </form>
-            </div>
-            
+            </div>           
         </div>
         {% endif %}
     </div>
+    <!-- Right Middle Column  -->
+    <div class="column">
+        <!-- {% if selected_workout %} change to if selected routine -->
+        <div class="card" style="width: 200px; height: auto ;">
+            <div class = "card-image">
+                <img src="" alt="" class="circle responsive-img smaller-image">
+            </div>
+            <div class="card-content">
+                <span class = "card-title">
+                <!-- {{selected_workout.exercise_name}} -->
+                </span>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium cum libero soluta consectetur ex inventore sequi ut? Animi consectetur soluta cum magnam dignissimos veritatis pariatur quibusdam dolore. Reiciendis, vero eveniet!
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur fugit officiis magnam fugiat unde totam quasi dignissimos. Earum quidem quos, quibusdam tempore ratione fugiat vel dolores, modi ut necessitatibus quo.
+                <!-- <p>Workout Name: {{selected_workout.exercise_name}}</p> -->
+                <!-- <p>Description: {{selected_workout.description}}</p> -->
+                <!-- <p>Muscle Group: {{selected_workout.muscle_group}}</p> -->
+                <!-- <p>Equipment: {{selected_workout.equipment}}</p> -->
+                <!-- <p>Rating: {{selected_workout.rating}}</p> -->
+            </div>           
+        </div>
+        <!-- {% endif %} -->
+    </div>
+
 </div>
 
        
@@ -148,13 +161,16 @@
                     <table class="responsive-table">
                         <div class="card-title">
                             <thead>
-                                <th>Routines</th>
+                                <th></th>
                             </thead>
                             <tbody>
                                 {% for routine in routines%}
                                     <p>{{routine.name}}</p>
                                     <input type="text" name="name" placeholder="Name" id=""/>
+                                    <input class = "btn red left" type="submit" value="View" id=""/>
                                     <input class = "btn red left" type="submit" value="Add" id=""/>
+                                    <input class = "btn red left" type="submit" value="Edit" id=""/>
+                                    <input class = "btn red left" type="submit" value="Delete" id=""/>
                                 {% endfor %}
                             </tbody>
                         </div>
