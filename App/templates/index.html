@@ -6,7 +6,40 @@
 
 {% block content %}
 <style>
-         .custom-black {
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.popup-content {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content form {
+    margin-bottom: 10px;
+}
+
+.popup-content button {
+    margin-right: 10px;
+}
+.popup-content #close-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #999;
+}
+    .custom-black {
     background-color: #1c1c1c; 
 }
     .container{
@@ -84,6 +117,37 @@
 <div class="row">
     <!-- Left middle Column  -->
     <div class="column">
+        <!-- Popup container for routine details -->
+{% if selected_routine %}
+<div class="popup-container" id="routine-popup" style="display: block;">
+    <div class="popup-content card">
+        <h3 id="routine-popup-title">Routine Details</h3>
+        <form id="routine-form">
+            <label for="routine-name">Name:</label>
+            <input type="text" id="routine-name" name="routine-name" required value="{{selected_routine.name}}">
+            <button type="button" id="edit-name-btn">Edit Name</button>
+            <br>
+            <label for="exercise-list">Exercises:</label>
+            <ul id="exercise-list">
+                <!-- List of exercises will be added dynamically -->
+                {% for workout in user_routines %}
+                <li>{{workout.exercise_name}}</li>
+                {% endfor %}
+            </ul>
+            <select id="exercise-dropdown">
+                <!-- Dropdown options for exercises will be added dynamically -->
+                {% for workout in workouts %}
+                <option href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" id="add-exercise-btn" action="/add_workout/{{routine_id}}">Add Exercise</button>
+            <button type="submit" id="finish-btn">Finish</button>
+        </form>
+        <button type="button" id="close-popup-btn">Close</button>
+    </div>
+</div>
+{% endif %}
+
 
 
         <!-- Middle column content (Selected Workout) -->
@@ -105,129 +169,88 @@
         </div>
         {% endif %}
     </div>
-    <!-- Right Middle Column  -->
-    <div class="column">
-        <!-- {% if selected_workout %} change to if selected routine -->
-        <div class="card" style="width: 200px; height: auto ;">
-            <div class = "card-image">
-                <img src="" alt="" class="circle responsive-img smaller-image">
-            </div>
-            <div class="card-content">
-                <span class = "card-title">
-                <!-- {{selected_workout.exercise_name}} -->
-                </span>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium cum libero soluta consectetur ex inventore sequi ut? Animi consectetur soluta cum magnam dignissimos veritatis pariatur quibusdam dolore. Reiciendis, vero eveniet!
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Pariatur fugit officiis magnam fugiat unde totam quasi dignissimos. Earum quidem quos, quibusdam tempore ratione fugiat vel dolores, modi ut necessitatibus quo.
-                <!-- <p>Workout Name: {{selected_workout.exercise_name}}</p> -->
-                <!-- <p>Description: {{selected_workout.description}}</p> -->
-                <!-- <p>Muscle Group: {{selected_workout.muscle_group}}</p> -->
-                <!-- <p>Equipment: {{selected_workout.equipment}}</p> -->
-                <!-- <p>Rating: {{selected_workout.rating}}</p> -->
-            </div>           
-        </div>
-        <!-- {% endif %} -->
+    {%if selected_routine1 %}
+    <p>Routine {{selected_routine1.exercise_name}}</p>
+    {% for workout in selected_routine1.workout %}
+    <p>{{workout.workout_id}}</p>
+    {% endfor %}
+    {% endif %}
+    <div>
+
     </div>
 
+    <!-- Right Middle Column  -->
 </div>
 
        
    
-<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh; padding-right: 15px; padding-left: 15px;">
     
-        <!-- Right column content (Routines) -->
-         <!-- Add your routines content here -->
+  <!-- Right column content (Routines) -->
+<ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top: 0x; overflow-y: scroll; width: 25vw;">
+    <nav class="nav-extended custom-black">
+        <div class="nav-wrapper">
+            <a href="#" style="font-size: 1.2em;" class="brand-logo">{{ current_user.username }}'s Routines </a>
+            <a class="right" href="/logout">Logout</a>
+        </div>
 
-        <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top:65px">
-            <nav class="nav-extended custom-black">
-                <div class="nav-wrapper">
-                <a href="#" style="font-size:1.2em" class="brand-logo">{{current_user.username}}'s Routines </a>
-                </div>
-            </nav>
+    </nav>
 
-             <!-- Create Routine here -->
-         <h6>Create a routine</h6>
-         <form class="row" style="height: min-content;" method="POST" action="/app/create">
-                <div class="card col s12" style=" height: 20vh">
-                    <input id="routine_name"  method="POST" type="text" name="routine_name">
-                    <label for="name_inline">Name</label>
-                    <input class = "btn grey right bottom" type="submit" value="SUBMIT" id="createBtn"/>
-                </div>
-         </form>
+    <!-- Create Routine here -->
+    <h6>Create a routine</h6>
+    <form class="row" style="height: min-content;" method="POST" action="/app/create">
+        <div class="card col s12" style="height: 20vh">
+            <input id="routine_name" method="POST" type="text" name="routine_name">
+            <label for="name_inline">Name</label>
+            <input class="btn grey right bottom" type="submit" value="SUBMIT" id="createBtn" />
+        </div>
+    </form>
 
-        
-        <!-- <div class="col s12 m3"> -->
-            <div class="row " style="height: 20vh;">
-                <div class="col s12">
-                    <table class="responsive-table">
-                        <div class="card-title">
-                            <thead>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                {% for routine in routines%}
-                                    <p>{{routine.name}}</p>
-                                    <input type="text" name="name" placeholder="Name" id=""/>
-                                    <input class = "btn red left" type="submit" value="View" id=""/>
-                                    <input class = "btn red left" type="submit" value="Add" id=""/>
-                                    <input class = "btn red left" type="submit" value="Edit" id=""/>
-                                    <input class = "btn red left" type="submit" value="Delete" id=""/>
-                                {% endfor %}
-                            </tbody>
-                        </div>
-                    </table>
-                </div>
-                
-                <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam cupiditate ipsam repellat illo! Aliquam totam corporis amet recusandae quos inventore. Praesentium maiores ab aliquid quo similique quam iure officiis laborum? -->
-                <!-- {% if workout_routines%}
-                    {% for workout_routine in  workout_routines%}
-                    {workout_routine.user_id}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe exercitationem dolor praesentium suscipit labore? Sequi consequatur obcaecati, unde blanditiis laudantium quibusdam fugiat necessitatibus, distinctio quod adipisci dolorum! Nisi, minus facilis.
-                        {% if workout_routine.user_id == current_user.id%}
-                            {% if workout_routine.routine_id == selected_routine%}
-                                {% for workout in workouts %}
-                                    {% if workout.id == workout_routine.workout_id %}
-                                        <div class="card" style="height: 50px;">
-                                            <div class="card-image>
-                                                <img src="{{workout.exercise_image2}}" width ="10px">
-                                            </div>
-                                            <div class="card-content">
-                                                <p>Name: {{workout.exercise_name}} </p>
-                                                <p>Description: {{workout.description}}</p>
-                                                <p>Rating: {{workout.rating}} </p>
-                                                <a href=""class="btn black right" type="submit" value="delete"></a>
-                                            </div>                                            
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo accusamus veritatis nam? Delectus et ab hic quidem molestias consequatur ratione laborum. Obcaecati sed consequuntur ab autem voluptate beatae sunt vel?
-                {% endif %} -->
-            </div>
-        <!-- </div> -->
-        <!-- <div class="col s12 m3">
-
-            Test 
-            {% if current_user.routine%}
-            <h3>ROUTINES</h3>
-                {% for routines in current_user.routine%}
-                <div class="card">
-                    <div class="card-content">
-                    <p>Testing Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium corporis ut tempore illum ad minima et fugiat, in animi voluptate, voluptatibus dolores magnam laborum deserunt! Sed minus exercitationem maiores expedita?</p>
-                    <p>Rating{{review.rating}}</p>
-                    <span class="card-title">Author:</span>
-                    </div>
+    <!-- Display Routines -->
+    <h5>Select A Routine</h5>
+        <div class="input-field col s12">
+            <div class="scrollable-list collection with-scroller">
+                {% for routine in routines %}
+                <div class="collection-item" style="margin-bottom: 10px; display: block;">
+                    <p>{{ routine.name }}</p>
+                    <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
+                    <a href="/app/routine/{{routine.routine_id}}" class="btn red left edit-btn" id="editBtn">Edit</a>
                 </div>
                 {% endfor %}
-            {% else %}
-            <h2>Add a routine to see routines</h2>
-            {% endif %}
-        </div> -->
-        </ul>
+            </div>
+        </div>
+</ul>
 </section>
-       
-        
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get elements
+        const popup = document.getElementById('routine-popup');
+        const editButtons = document.querySelectorAll('.edit-btn');
+        const closePopupBtn = document.getElementById('close-popup-btn');
+
+        // Function to show the pop-up
+        function showPopup() {
+            popup.style.display = 'block';
+        }
+
+        // Function to close the pop-up
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+
+        // Add click event listener to edit buttons
+        editButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                showPopup();
+            });
+        });
+
+        // Add click event listener to close button
+        closePopupBtn.addEventListener('click', function () {
+            closePopup();
+        });
+    });
+</script>
 
 {% endblock %}

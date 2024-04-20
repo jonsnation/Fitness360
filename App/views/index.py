@@ -38,20 +38,20 @@ def login_page():
 # @index_views.route('/app', defaults={'workout_id': None}, methods=['GET'])
 @index_views.route('/app', methods=['GET'])
 @index_views.route('/app/<workout_id>', methods=['GET'])
+@index_views.route('/app/routine/<routine_id>', methods=['GET'])
 @index_views.route('/app/<workout_id>/<routine_id>', methods=['GET'])
 @jwt_required()
 def index_page(workout_id = 1, routine_id = 1):
     workouts = get_all_workouts()
     declared_routine = get_routine_by_id(routine_id)
+    routines = get_user_routines(jwt_current_user.id)
 
     if declared_routine:
-        routines = get_all_routines()
         workout_routines = get_all_workout_routines()
         selected_routine = get_routine_by_id(declared_routine.routine_id)
         user_routines = get_all_workouts_in_routines(routine_id)
     else:
         declared_routine = create_routine_declaration(jwt_current_user)
-        routines = get_all_routines()
         workout_routines = get_all_workout_routines()
         selected_routine = get_routine_by_id(declared_routine.routine_id)
         user_routines = get_all_workouts_in_routines(declared_routine.routine_id)
@@ -64,8 +64,21 @@ def index_page(workout_id = 1, routine_id = 1):
     print("here for workout routine:")
     print(workout_routines)
     print("?")
-    return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user)
+    return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user, user_routines=user_routines)
 
+@index_views.route('app/view/<routine_id>')
+@jwt_required()
+def view_routine_page(routine_id=1):
+    workouts = get_all_workouts()
+    selected_routine1= get_routine_by_id(routine_id)
+    routines = get_user_routines()
+
+    if selected_routine is None:
+        return redirect(url_for(index_views.index_page))
+
+    return render_template('index.html', workouts=workouts, selected_routine1=selected_routine1, routines=routines)
+
+    
 @index_views.route('/init', methods=['GET'])
 def initialize():
     db.drop_all()
