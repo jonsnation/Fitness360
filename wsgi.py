@@ -17,6 +17,7 @@ migrate = get_migrate(app)
 def initialize():
     db.drop_all()
     db.create_all()
+    create_user('bob', 'bobpass')
     null_found = False
     # Load workouts from CSV file
     with open('workout.csv', encoding='unicode_escape') as csvfile:
@@ -37,15 +38,8 @@ def initialize():
             db.session.add(workout)
     db.session.commit()
 
-    # # Print workouts to console
-    if null_found:
-        print("Null value(s) found and skipped")
-    print("parsed csv successfully")
-    # workouts = Workout.query.all()
-    # for workout in workouts:
-    #     print(workout.get_json())
-    create_user('bob', 'bobpass')
-    print('database intialized')
+    print ('database initialized')
+
 
 '''
 User Commands

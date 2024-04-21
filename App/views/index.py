@@ -72,15 +72,16 @@ def view_routine_page(routine_id):
 
     
 @index_views.route('/init', methods=['GET'])
-def initialize():
+def init():
     db.drop_all()
     db.create_all()
+    create_user('bob', 'bobpass')
     null_found = False
     # Load workouts from CSV file
     with open('workout.csv', encoding='unicode_escape') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            print(row)
+            # print(row)
             # Check for null values in the row
             if not all(row.values()):
                 null_found = True
@@ -95,12 +96,7 @@ def initialize():
             db.session.add(workout)
     db.session.commit()
 
-    # # Print workouts to console
-    if null_found:
-        print("Null value(s) found and skipped")
-    print("parsed csv successfully")
-    create_user('bob', 'bobpass')
-    print('database intialized')
+    return jsonify(message='db initialized!')
 
 @index_views.route('/health', methods=['GET'])
 def health_check():
@@ -191,4 +187,3 @@ def update_name(routine_id):
 
     return redirect(url_for('index_views.view_routine_page', routine_id= routine_id))
 
-   
