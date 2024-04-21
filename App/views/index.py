@@ -1,7 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify,flash, url_for
-from App.models import db, User, Workout, Routine, WorkoutRoutine
 from flask_jwt_extended import jwt_required, current_user as jwt_current_user, unset_jwt_cookies, set_access_cookies
-
+from App.models import User, Workout, Routine, WorkoutRoutine
 import csv
 
 from App.controllers import (

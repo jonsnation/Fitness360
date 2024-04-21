@@ -1,10 +1,8 @@
 from flask import Blueprint, render_template, jsonify, request, flash, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user, unset_jwt_cookies, set_access_cookies
-from sqlalchemy.exc import IntegrityError
-
-from App.models.user import db, User
 
 from.index import index_views
+
 
 from App.controllers import (
     login
