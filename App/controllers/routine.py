@@ -2,7 +2,6 @@ from App.models import Routine
 from App.database import db
 from .workoutroutine import get_all_workouts_in_routines
 
-   return routine
 
 # def create_routine2(name, description, user_id):
 #     routine = Routine(name=name, description=description, user_id=user_id)
