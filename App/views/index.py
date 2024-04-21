@@ -187,3 +187,4 @@ def update_name(routine_id):
         flash('Failed to update routine')
     return redirect(url_for('index_views.index_page'))
 
+
