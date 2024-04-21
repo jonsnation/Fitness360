@@ -108,6 +108,16 @@ body {
         width: 300px; /* Adjust as needed */
         height: 400px;
     }
+
+    #add-exercise-btn:hover, .delete-exercise-btn:hover, #finish-btn:hover span:after {
+        background-color: #0099ff; /* Change to your desired hover color */
+        cursor: pointer;
+    }
+
+    .separator {
+        border-top: 1px solid #0909f1;
+        margin: 10px 0;
+    }
 </style>
 
 
@@ -147,6 +157,7 @@ body {
             <label for="routine-name">Update Name:</label>
             <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
             <br>
+            <div class="separator"></div>
             <label for="exercise-list">Exercises:</label>
             <ul id="exercise-list">
                 <!-- List of exercises will be added dynamically -->
@@ -154,13 +165,14 @@ body {
                 {% for workout1 in workouts %}
                 {% if workout1.workout_id == workout.workout_id %}
                 <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">{{workout1.exercise_name}}
-                <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" 
-                class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
+                <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px" 
+                class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete</button>
                 </li>
                 {% endif %}
                 {% endfor %}
                 {% endfor %}
             </ul>
+            <div class="separator"></div>
             <p>Select exercise to add to routine:</p>
             <select id="exercise-dropdown">
                 <!-- Dropdown options for exercises will be added dynamically -->
@@ -168,8 +180,8 @@ body {
                 <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
                 {% endfor %}
             </select>
-            <button type="button" id="add-exercise-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Add Exercise</button>
-            <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Finish</button>
+            <button type="button" id="add-exercise-btn" style="padding: 5px 10px" >Add Exercise</button>
+            <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px" >Finish</button>
         </form>
         <button type="button" id="close-popup-btn">X</button>
     </div>
@@ -230,7 +242,7 @@ body {
         </div>
     </div>
 
-    <!-- Right Middle Column  -->
+    <!-- Right Column  -->
 </div>
 
 
@@ -263,8 +275,8 @@ body {
                 {% for routine in routines %}
                 <div class="collection-item" style="margin-bottom: 10px; display: block;">
                     <p>{{ routine.name }}</p>
-                    <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
-                    <a href="/routine/delete/{{routine.routine_id}}"class="btn red left delete-btn" id="deleteBtn">Delete</a>
+                    <a href="/app/view/{{routine.routine_id}}"class="btn red view-btn" id="viewBtn">View</a>
+                    <a href="/routine/delete/{{routine.routine_id}}"class="btn red delete-btn" id="deleteBtn">Delete</a>
                 </div>
                 {% endfor %}
             </div>
