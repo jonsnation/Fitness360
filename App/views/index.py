@@ -27,6 +27,7 @@ from App.controllers import (
     get_all_workouts,
     get_workout_by_id,
     get_workout_by_name,
+    remove_workout_from_routine,
 )
 
 
@@ -141,6 +142,19 @@ def add_workout(routine_id, workout_id):
         flash('Workout not added')
         return  redirect(url_for('index_views.index_page'))
 
+#delete workout form routine
+@index_views.route('/deleteworkout/<int:routine_id>/<int:workout_id>', methods=['GET'])
+@jwt_required()
+def delete_workout(routine_id, workout_id):
+    routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
+
+    if routine_exercise:
+        remove_workout_from_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
+        flash('Workout removed')
+        return  redirect(url_for('index_views.index_page'))
+    else:
+        flash('Workout not removed')
+        return  redirect(url_for('index_views.index_page'))
 
 # Delete routine
 @index_views.route('/routine/delete/<int:routine_id>', methods=['GET'])
