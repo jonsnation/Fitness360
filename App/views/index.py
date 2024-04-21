@@ -50,15 +50,11 @@ def index_page(workout_id = 1, routine_id = 1):
     workout_routines = get_all_workout_routines()
     selected_routine = get_routine_by_id(routine_id)
 
-
     if workout_id is not None:
         selected_workout = Workout.query.get(workout_id)
     else:
         selected_workout = None
     
-    print("here for workout routine:")
-    print(workout_routines)
-    print("?")
     return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user, user_routines=user_routines)
 
 @index_views.route('/app/view/<routine_id>')
