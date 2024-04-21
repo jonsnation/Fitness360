@@ -1,5 +1,5 @@
 from App.database import db
-
+from math import floor
 
 class Workout(db.Model):
     workout_id = db.Column(db.Integer, primary_key=True)
@@ -31,3 +31,6 @@ class Workout(db.Model):
             'rating': self.rating,
             'description': self.description
         }
+    
+    def get_rating(self):
+        return floor(self.rating)
