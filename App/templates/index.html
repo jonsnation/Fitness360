@@ -127,7 +127,9 @@
             <ul id="exercise-list">
                 <!-- List of exercises will be added dynamically -->
                 {% for workout in user_routines %}
-                <li>{{workout.workout_id}}</li>
+                <li>{{workout.workout_id}}
+                <button type="button" class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
+                </li>
                 {% endfor %}
             </ul>
             <select id="exercise-dropdown">
@@ -229,6 +231,18 @@
         window.location.href = url;
     });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const deleteExerciseBtns = document.querySelectorAll('.delete-exercise-btn');
+    deleteExerciseBtns.forEach(function(btn) {
+        btn.addEventListener('click', function () {
+            const selectedWorkoutId = btn.dataset.workoutId;
+            const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
+            const url = `/deleteworkout/${selectedRoutineId}/${selectedWorkoutId}`;
+            window.location.href = url;
+        });
+    });
+});
+
     document.addEventListener('DOMContentLoaded', function () {
         // Get elements
         const popup = document.getElementById('routine-popup');

@@ -54,9 +54,9 @@ def find_routine(self, name):
 def find_workout (self, routine_id, workout_id):
     find = WorkoutRoutine.query.filter_by(user_id = self.id,routine_id = routine_id, workout_id = workout_id).first()
     if find:
-        return False
+        return find
     else:
-        return True
+        return None
 
 def add_workout_to_routine(self, routine_id, workout_id):
     workout_routine = WorkoutRoutine(user_id=self.id, routine_id=routine_id, workout_id=workout_id)
@@ -66,7 +66,8 @@ def add_workout_to_routine(self, routine_id, workout_id):
 
 #check
 def remove_workout_from_routine(self, routine_id, workout_id):
-    workout_routine =WorkoutRoutine.query.filter_by(user_id=self.id, routine_id=routine_id, workout_id=workout_id)
-    db.session.delete(workout_routine)
-    db.session.commit()
+    workout_routine = WorkoutRoutine.query.filter_by(user_id=self.id, routine_id=routine_id, workout_id=workout_id).first()
+    if workout_routine:
+        db.session.delete(workout_routine)
+        db.session.commit()
     return None
