@@ -102,7 +102,7 @@
         <div class="input-field col s12">
             <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
-                        <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
                 {% endfor %}
             </div>
         </div>
@@ -127,7 +127,7 @@
             <ul id="exercise-list">
                 <!-- List of exercises will be added dynamically -->
                 {% for workout in user_routines %}
-                <li>{{workout.exercise_name}}</li>
+                <li>{{workout.workout_id}}</li>
                 {% endfor %}
             </ul>
             <select id="exercise-dropdown">
@@ -138,7 +138,6 @@
             </select>
             <button type="button" id="add-exercise-btn">Add Exercise</button>
             <button type="submit" id="finish-btn">Finish</button>
-            <button type="button" id="deleteBtn">Delete</button>
         </form>
         <button type="button" id="close-popup-btn">Close</button>
     </div>
@@ -148,7 +147,7 @@
 
 
         <!-- Middle column content (Selected Workout) -->
-        {% if selected_workout and not selected_routine1 %}
+        {% if selected_workout and selected_routine %}
         <div class="card">
             <div class = "card-image">
                 <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
@@ -166,7 +165,7 @@
         </div>
         {% endif %}
         <div class="card" id="routine-info">
-            {%if selected_routine %}
+            {%if selected_routine and not selected_workout %}
             <a>Routine: {{selected_routine.name}}</a>
             {% for workout in selected_routine.workout %}
             <p>{{workout.workout_id}}</p>
@@ -212,6 +211,7 @@
                     <p>{{ routine.name }}</p>
                     <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
                     <a class="btn red left edit-btn" id="editBtn">Edit</a>
+                    <a href="/routine/delete/{{routine.routine_id}}"class="btn red left delete-btn" id="deleteBtn">Delete</a>
                 </div>
                 {% endfor %}
             </div>

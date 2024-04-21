@@ -74,12 +74,13 @@ def view_routine_page(routine_id):
     selected_routine= get_routine_by_id(routine_id)
     workouts = get_all_workouts()
     routines = get_user_routines(jwt_current_user.id)
+    user_routines = get_all_workouts_in_routines(routine_id)
 
     if selected_routine is None:
         flash('Routine not valid.')
         return redirect(url_for('index_views.index_page'))
     flash('Here is your routine.')
-    return render_template('index.html', selected_routine=selected_routine, workouts=workouts, routines=routines)
+    return render_template('index.html', selected_routine=selected_routine, workouts=workouts, routines=routines, user_routines=user_routines)
 
     
 @index_views.route('/init', methods=['GET'])
@@ -149,16 +150,19 @@ def add_workout(routine_id, workout_id):
         return  redirect(url_for('index_views.index_page'))
 
 
-# # Delete routine
-# @routine_views.route('/routine/delete/<int:id>', methods=['POST'])
-# @jwt_required
-# def delete_routine2(id):
-#     routine = get_routine(id)
-#     if not routine or routine.user_id != jwt_current_user.id:
-#         return redirect(url_for('user_views.display_routines'))
+# Delete routine
+@index_views.route('/routine/delete/<int:routine_id>', methods=['GET'])
+@jwt_required()
+def delete_routine_by_id(routine_id):
+    routine = get_routine_by_id(routine_id)
 
-#     deleted_routine = delete_routine(id)
-#     if deleted_routine:
-#         return redirect(url_for('user_views.display_routines'))
+    if not routine:
+        flash('routine does not exist')
 
-#     return 'Failed to delete routine', 400
+
+    deleted_routine = delete_routine(routine_id)
+    if deleted_routine:
+        flash('routine deleted')
+    return redirect(url_for('index_views.index_page'))
+
+   
