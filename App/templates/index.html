@@ -147,7 +147,7 @@
 
 
         <!-- Middle column content (Selected Workout) -->
-        {% if selected_workout and selected_routine %}
+        {% if selected_workout and not selected_routine %}
         <div class="card">
             <div class = "card-image">
                 <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
@@ -170,6 +170,7 @@
             {% for workout in selected_routine.workout %}
             <p>{{workout.workout_id}}</p>
             {% endfor %}
+            <a class="btn red left edit-btn" id="editBtn">Edit</a>
             {% endif %}
             <div>
         </div>
@@ -210,7 +211,6 @@
                 <div class="collection-item" style="margin-bottom: 10px; display: block;">
                     <p>{{ routine.name }}</p>
                     <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
-                    <a class="btn red left edit-btn" id="editBtn">Edit</a>
                     <a href="/routine/delete/{{routine.routine_id}}"class="btn red left delete-btn" id="deleteBtn">Delete</a>
                 </div>
                 {% endfor %}
