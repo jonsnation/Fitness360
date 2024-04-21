@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Fitness 360{% endblock %}
-{% block page %}{% endblock %}
+{% block page %}Fitness 360{% endblock %}
 
 {{ super() }}
 
@@ -14,22 +14,6 @@ body {
    font-family: "Open Sans", sans-serif;
 }
 
-/* Added media queries for smaller screens */
-@media screen and (max-width: 600px) {
-    body {
-        font-size: 0.8em;
-    }
-    .popup-content {
-        width: 90%;
-    }
-    .column {
-        width: 100%;
-    }
-    .smaller-image {
-        width: 100%;
-        height: auto;
-    }
-}
 .popup-container {
     position: fixed;
     top: 50%;
@@ -108,16 +92,6 @@ body {
         width: 300px; /* Adjust as needed */
         height: 400px;
     }
-
-    #add-exercise-btn:hover, .delete-exercise-btn:hover, #finish-btn:hover span:after {
-        background-color: #0099ff; /* Change to your desired hover color */
-        cursor: pointer;
-    }
-
-    .separator {
-        border-top: 1px solid #0909f1;
-        margin: 10px 0;
-    }
 </style>
 
 
@@ -151,13 +125,12 @@ body {
 {% if selected_routine %}
 <div class="popup-container" id="routine-popup" style="display: none;">
     <div class="popup-content card">
-        <p id="routine-popup-title" style="color: black; font-size:larger">Routine: {{selected_routine.name}}</p>
+        <p id="routine-popup-title" style="colour: black; font-size:larger">Routine: {{selected_routine.name}}</p>
         <p>Click finish to save changes.</p>
         <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
             <label for="routine-name">Update Name:</label>
             <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
             <br>
-            <div class="separator"></div>
             <label for="exercise-list">Exercises:</label>
             <ul id="exercise-list">
                 <!-- List of exercises will be added dynamically -->
@@ -165,24 +138,22 @@ body {
                 {% for workout1 in workouts %}
                 {% if workout1.workout_id == workout.workout_id %}
                 <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">{{workout1.exercise_name}}
-                <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px" 
-                class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete</button>
+                <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" 
+                class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
                 </li>
                 {% endif %}
                 {% endfor %}
                 {% endfor %}
             </ul>
-            <div class="separator"></div>
             <p>Select exercise to add to routine:</p>
             <select id="exercise-dropdown">
                 <!-- Dropdown options for exercises will be added dynamically -->
-                <option value="" disabled selected>Select exercise here...</option>
                 {% for workout in workouts %}
                 <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
                 {% endfor %}
             </select>
-            <button type="button" id="add-exercise-btn" style="padding: 5px 10px" >Add Exercise</button>
-            <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px" >Finish</button>
+            <button type="button" id="add-exercise-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Add Exercise</button>
+            <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Finish</button>
         </form>
         <button type="button" id="close-popup-btn">X</button>
     </div>
@@ -225,13 +196,7 @@ body {
             <p>Description: {{workout1.description}}</p>
             <p>Muscle Group: {{workout1.muscle_group}}</p>
             <p>Equipment: {{workout1.equipment}}</p>
-            <p>Rating: {{workout1.get_rating()}}</p>
-            {%for i in range(workout1.get_rating())%}
-                <i class="material-icons">star</i>
-            {%endfor%}
-            {%for i in range(10-workout1.get_rating())%}
-                <i class="material-icons">star_border</i>
-            {%endfor%}
+            <p>Rating: {{workout1.rating}}</p>
             </div>
             {% endif %}
             {% endfor %}
@@ -243,7 +208,7 @@ body {
         </div>
     </div>
 
-    <!-- Right Column  -->
+    <!-- Right Middle Column  -->
 </div>
 
 
@@ -260,7 +225,7 @@ body {
     </nav>
 
     <!-- Create Routine here -->
-    <h5>Create a routine</h5>
+    <h6>Create a routine</h6>
     <form class="row" style="height: min-content;" method="POST" action="/app/create">
         <div class="card col s12" style="height: 20vh">
             <input id="routine_name" method="POST" type="text" name="routine_name">
@@ -276,8 +241,8 @@ body {
                 {% for routine in routines %}
                 <div class="collection-item" style="margin-bottom: 10px; display: block;">
                     <p>{{ routine.name }}</p>
-                    <a href="/app/view/{{routine.routine_id}}"class="btn red view-btn" id="viewBtn">View</a>
-                    <a href="/routine/delete/{{routine.routine_id}}"class="btn red delete-btn" id="deleteBtn">Delete</a>
+                    <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
+                    <a href="/routine/delete/{{routine.routine_id}}"class="btn red left delete-btn" id="deleteBtn">Delete</a>
                 </div>
                 {% endfor %}
             </div>
