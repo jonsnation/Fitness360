@@ -120,7 +120,7 @@
         <h3 id="routine-popup-title">Routine: {{selected_routine.name}}</h3>
         <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
             <label for="routine-name">Update Name:</label>
-            <input type="text" id="routine-name" name="name" required>
+            <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
             <br>
             <label for="exercise-list">Exercises:</label>
             <ul id="exercise-list">
