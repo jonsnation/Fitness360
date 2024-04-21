@@ -162,8 +162,8 @@ body {
 
         <!-- Middle column content (Selected Workout) -->
         {% if selected_workout %}
-        <div class="card" style="height: 350 px; width: 500px overflow: hidden">
-            <div class = "card-image" style="height:350px; overflow: hidden">
+        <div class="card" style="height: max-content; width: 500px; overflow: hidden;">
+            <div class = "card-image" style="height:fit-content; overflow: hidden;">
                 <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
             </div>
             <div class="card-content">
