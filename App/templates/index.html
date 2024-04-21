@@ -118,54 +118,52 @@ body {
     </ul>
 </section>
     
+<!-- Middle -->
 <div class="row">
-    <!-- Left middle Column  -->
     <div class="column">
         <!-- Popup container for routine details -->
-{% if selected_routine %}
-<div class="popup-container" id="routine-popup" style="display: none;">
-    <div class="popup-content card">
-        <p id="routine-popup-title" style="colour: black; font-size:larger">Routine: {{selected_routine.name}}</p>
-        <p>Click finish to save changes.</p>
-        <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
-            <label for="routine-name">Update Name:</label>
-            <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
-            <br>
-            <label for="exercise-list">Exercises:</label>
-            <ul id="exercise-list" style="overflow-y: auto; max-height: 200px;">
-                <!-- List of exercises will be added dynamically -->
-                {% for workout in user_routines %}
-                {% for workout1 in workouts %}
-                {% if workout1.workout_id == workout.workout_id %}
-                <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">{{workout1.exercise_name}}
-                <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" 
-                class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
-                </li>
-                {% endif %}
-                {% endfor %}
-                {% endfor %}
-            </ul>
-            <p>Select exercise to add to routine:</p>
-            <select id="exercise-dropdown">
-                <!-- Dropdown options for exercises will be added dynamically -->
-                {% for workout in workouts %}
-                <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
-                {% endfor %}
-            </select>
-            <button type="button" id="add-exercise-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Add Exercise</button>
-            <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Finish</button>
-        </form>
-        <button type="button" id="close-popup-btn">X</button>
-    </div>
-</div>
-{% endif %}
-
-
+        {% if selected_routine %}
+        <div class="popup-container" id="routine-popup" style="display: none;">
+            <div class="popup-content card">
+                <p id="routine-popup-title" style="colour: black; font-size:larger">Routine: {{selected_routine.name}}</p>
+                <p>Click finish to save changes.</p>
+                <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
+                    <label for="routine-name">Update Name:</label>
+                    <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
+                    <br>
+                    <label for="exercise-list">Exercises:</label>
+                    <ul id="exercise-list" style="overflow-y: auto; max-height: 200px;">
+                        <!-- List of exercises will be added dynamically -->
+                        {% for workout in user_routines %}
+                        {% for workout1 in workouts %}
+                        {% if workout1.workout_id == workout.workout_id %}
+                        <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">{{workout1.exercise_name}}
+                        <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" 
+                        class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                    <p>Select exercise to add to routine:</p>
+                    <select id="exercise-dropdown">
+                        <!-- Dropdown options for exercises will be added dynamically -->
+                        {% for workout in workouts %}
+                        <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" id="add-exercise-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Add Exercise</button>
+                    <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Finish</button>
+                </form>
+                <button type="button" id="close-popup-btn">X</button>
+            </div>
+        </div>
+        {% endif %}
 
         <!-- Middle column content (Selected Workout) -->
         {% if selected_workout %}
-        <div class="card" style="width: 500px">
-            <div class = "card-image" style="height:400px; overflow: hidden">
+        <div class="card" style="height: 350 px; width: 500px overflow: hidden">
+            <div class = "card-image" style="height:350px; overflow: hidden">
                 <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
             </div>
             <div class="card-content">
@@ -185,7 +183,7 @@ body {
             </div>  
         </div>
         {% endif %}
-        <div class="card" id="routine-info" style="height: 400 px; width:400px;">
+        <div class="card" id="routine-info" style="height: 350 px; width:400px; overflow: hidden">
             {%if selected_routine and not selected_workout %}
             <a style="color: black; font-size:10">Routine: {{selected_routine.name}}</a>
             {% for workout in selected_routine.workout %}
@@ -203,15 +201,11 @@ body {
             {% endfor %}
             <a class="btn red left edit-btn" id="editBtn">Edit</a>
             {% endif %}
-            <div>
-        </div>
         </div>
     </div>
-
-    <!-- Right Middle Column  -->
 </div>
 
-
+<!-- Right side navigation bar to create and select a routine-->
 <section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh; padding-right: 15px; padding-left: 15px;">
 
   <!-- Right column content (Routines) -->
@@ -239,7 +233,7 @@ body {
         <div class="input-field col s12">
             <div class="scrollable-list collection with-scroller">
                 {% for routine in routines %}
-                <div class="collection-item" style="margin-bottom: 10px; display: block;">
+                <div class="collection-item" style="margin-bottom: 10px; display: block; width: 30em;">
                     <p>{{ routine.name }}</p>
                     <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
                     <a href="/routine/delete/{{routine.routine_id}}"class="btn red left delete-btn" id="deleteBtn">Delete</a>
