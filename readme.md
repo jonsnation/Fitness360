@@ -198,15 +198,15 @@ Are you ready to transform your life? Our workout website is your ultimate fitne
 Dive into a vast library of workout routines, tailored for every fitness level.
 Join us now and unleash the healthier and happier YOU!
 
-## Website link
-
-You can access this website through this link- [Repository Link](https://github.com/jonsnation/INFO2602WORKOUTPROJECT/tree/main)
-
 ## Project Summary
 
-The project aims to develop an online platform for selecting workouts and implementing them into workout routines custom to users. Creating and tracking workout routines on paper can be considered outdated in this day and age. In addition, this online app tracker allows for consistent tracking of a user and their routines from anywhere an internet connection can be established. Additionally, the privilege of tracking previous workout routines can be very useful when others ask for the user’s past routines. 
+The is an INFO 2602 Web Programming project that aims to develop an online platform for selecting workouts and implementing them into workout routines custom to users. Creating and tracking workout routines on paper can be considered outdated in this day and age. In addition, this online app tracker allows for consistent tracking of a user and their routines from anywhere an internet connection can be established. Additionally, the privilege of tracking previous workout routines can be very useful when others ask for the user’s past routines. 
 
 Workout enthusiasts may explore a plethora of workouts and add them to their workout routine. Fitness 360 is an extensive website that offers users a seamless experience as they explore and discover new workouts across various types.
+
+## Website link
+
+You can access this website through this link- [Site Link](https://github.com/jonsnation/INFO2602WORKOUTPROJECT/tree/main)
 
 ## Features implemented
 
