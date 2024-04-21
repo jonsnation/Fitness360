@@ -10,11 +10,15 @@ The is an INFO 2602 Web Programming project that aims to develop an online platf
 
 Workout enthusiasts may explore a plethora of workouts and add them to their workout routine. Fitness 360 is an extensive website that offers users a seamless experience as they explore and discover new workouts across various types.
 
-## Website link
+## Website Link
 
 You can access this website through this link- [Site Link](https://eliteemployees.onrender.com/)
 
-## Features implemented
+## Youtube Link
+
+Watch our youtube video here! - [Site Link](https://youtu.be/frRdHZ-_yVk)
+
+## Features Implemented
 
 - Browse Workouts: Users can scroll through workouts to select and add to their routines.
 
@@ -58,7 +62,6 @@ flask run
 
 </details>
 
-
 ## Authentication Routes
 
 1. <u>/login</u> [POST]: Logs in the user.
@@ -68,7 +71,6 @@ flask run
 ## Snippets 
 
 Mockup<br/>
-
 ![Diagram 1](images/Wireframes-2.png)
 
 ![Diagram 2](images/Wireframes-5.png)
@@ -77,3 +79,4 @@ Mockup<br/>
 
 System Design<br/>
 ![Diagram 4](images/SystemDesign.png)
+
