@@ -1,5 +1,6 @@
 from App.models import Routine
 from App.database import db
+from .workoutroutine import get_all_workouts_in_routines
 
 
 # def create_routine2(name, description, user_id):
@@ -29,7 +30,7 @@ def get_all_routines_json():
 
     return [routine.get_json() for routine in routines]
 
-def update_routine(id, name=None, description=None):
+def update_routine(id, name=None):
     routine = Routine.query.get(id)
     if name is not None:
         routine.name = name
@@ -38,19 +39,15 @@ def update_routine(id, name=None, description=None):
     db.session.commit()
     return routine
 
-# def add_workout_to_routine(self, workout_id, routine_id):
-#     # routine = Routine.query.get(routine_id)
-#     try:
-#         workout = WorkoutRoutine(workout_id=workout_id, routine_id=routine_id)
-#         db.session.add(workout)
-#         db.session.commit()
-#         return workout
-#     except Exception as e:
-#         print(e)
-#         db.session.rollback()
-#         return None
 
 def delete_routine(id):
-    routine = Routine.query.get(id)
-    db.session.delete(routine)
-    db.session.commit()
+    routine = Routine.query.filter_by(routine_id=id).first()
+    workouts = get_all_workouts_in_routines(id)
+    if routine:
+        db.session.delete(routine)
+        for workout in workouts: 
+            db.session.delete(workout)
+        db.session.commit()
+        return routine
+    else:
+        return None
