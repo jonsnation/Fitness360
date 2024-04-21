@@ -149,9 +149,9 @@
 
 
         <!-- Middle column content (Selected Workout) -->
-        {% if selected_workout and not selected_routine %}
-        <div class="card">
-            <div class = "card-image">
+        {% if selected_workout %}
+        <div class="card" style="width: 500px">
+            <div class = "card-image" style="height:400px; overflow: hidden">
                 <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
             </div>
             <div class="card-content">
@@ -166,7 +166,7 @@
             </div>  
         </div>
         {% endif %}
-        <div class="card" id="routine-info">
+        <div class="card" id="routine-info" style="height: 400 px; width:400px;">
             {%if selected_routine and not selected_workout %}
             <a>Routine: {{selected_routine.name}}</a>
             {% for workout in selected_routine.workout %}
@@ -228,9 +228,33 @@
         const selectedWorkoutId = document.getElementById('exercise-dropdown').value;
         const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
         const url = `/addworkout/${selectedRoutineId}/${selectedWorkoutId}`;
-        window.location.href = url;
+        
+        // Make an AJAX request to the server
+        fetch(url, {
+            method: 'GET'
+        })
+        .then(response => {
+            // Check if the response was successful
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Assuming the response contains JSON data indicating success or failure
+            return response.json();
+        })
+        .then(data => {
+            // Handle the response data accordingly (e.g., show success message)
+            alert(data.message); // Replace alert with your preferred UI update method
+            // Optionally, you can also update the form or UI based on the response
+            // For example, you can refresh the page or update specific elements
+            location.reload(); // Example of refreshing the page
+        })
+        .catch(error => {
+            // Handle errors (e.g., show error message)
+            console.error('There was a problem with the fetch operation:', error);
+        });
     });
 });
+
 document.addEventListener('DOMContentLoaded', function () {
     const deleteExerciseBtns = document.querySelectorAll('.delete-exercise-btn');
     deleteExerciseBtns.forEach(function(btn) {
@@ -238,39 +262,63 @@ document.addEventListener('DOMContentLoaded', function () {
             const selectedWorkoutId = btn.dataset.workoutId;
             const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
             const url = `/deleteworkout/${selectedRoutineId}/${selectedWorkoutId}`;
-            window.location.href = url;
+            
+            // Make an AJAX request to the server
+            fetch(url, {
+                method: 'GET'
+            })
+            .then(response => {
+                // Check if the response was successful
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                // Assuming the response contains JSON data indicating success or failure
+                return response.json();
+            })
+            .then(data => {
+                // Handle the response data accordingly (e.g., show success message)
+                alert(data.message); // Replace alert with your preferred UI update method
+                // Optionally, you can also update the form or UI based on the response
+                // For example, you can refresh the page or update specific elements
+                location.reload(); // Example of refreshing the page
+            })
+            .catch(error => {
+                // Handle errors (e.g., show error message)
+                console.error('There was a problem with the fetch operation:', error);
+            });
         });
     });
 });
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get elements
-        const popup = document.getElementById('routine-popup');
-        const editButtons = document.querySelectorAll('.edit-btn');
-        const closePopupBtn = document.getElementById('close-popup-btn');
+document.addEventListener('DOMContentLoaded', function () {
+    // Get elements
+    const popup = document.getElementById('routine-popup');
+    const editButtons = document.querySelectorAll('.edit-btn');
+    const closePopupBtn = document.getElementById('close-popup-btn');
 
-        // Function to show the pop-up
-        function showPopup() {
-            popup.style.display = 'block';
-        }
+    // Function to show the pop-up
+    function showPopup() {
+        popup.style.display = 'block';
+    }
 
-        // Function to close the pop-up
-        function closePopup() {
-            popup.style.display = 'none';
-        }
+    // Function to close the pop-up
+    function closePopup() {
+        popup.style.display = 'none';
+    }
 
-        // Add click event listener to edit buttons
-        editButtons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                showPopup();
-            });
-        });
-
-        // Add click event listener to close button
-        closePopupBtn.addEventListener('click', function () {
-            closePopup();
+    // Add click event listener to edit buttons
+    editButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            showPopup();
         });
     });
+
+    // Add click event listener to close button
+    closePopupBtn.addEventListener('click', function () {
+        closePopup();
+    });
+});
+
 </script>
 
 {% endblock %}

@@ -134,7 +134,7 @@ def create_routine_route():
 def add_workout(routine_id, workout_id):
     routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
 
-    if routine_exercise:
+    if routine_exercise is None:
         add_workout_to_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
         flash('Workout added')
         return  redirect(url_for('index_views.index_page'))
