@@ -34,8 +34,6 @@ def update_routine(id, name=None):
     routine = Routine.query.get(id)
     if name is not None:
         routine.name = name
-    if description is not None:
-        routine.description = description
     db.session.commit()
     return routine
 

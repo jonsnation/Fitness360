@@ -117,11 +117,10 @@
 {% if selected_routine %}
 <div class="popup-container" id="routine-popup" style="display: none;">
     <div class="popup-content card">
-        <h3 id="routine-popup-title">Routine Details</h3>
-        <form id="routine-form">
-            <label for="routine-name">Name:</label>
-            <input type="text" id="routine-name" name="routine-name" required value="{{selected_routine.name}}">
-            <button type="button" id="edit-name-btn">Edit Name</button>
+        <h3 id="routine-popup-title">Routine: {{selected_routine.name}}</h3>
+        <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
+            <label for="routine-name">Update Name:</label>
+            <input type="text" id="routine-name" name="name" required>
             <br>
             <label for="exercise-list">Exercises:</label>
             <ul id="exercise-list">

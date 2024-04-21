@@ -171,4 +171,22 @@ def delete_routine_by_id(routine_id):
         flash('routine deleted')
     return redirect(url_for('index_views.index_page'))
 
+@index_views.route('/updatename/<int:routine_id>', methods=['POST'])
+@jwt_required()
+def update_name(routine_id):
+    routine = get_routine_by_id(routine_id)
+
+    if not routine:
+        flash('Routine does not exist')
+        return redirect(url_for('index_views.index_page'))
+
+    new_name = request.form.get('name') 
+
+    if update_routine(routine_id, new_name):
+        flash('Routine updated')
+    else:
+        flash('Failed to update routine')
+
+    return redirect(url_for('index_views.index_page'))
+
    
