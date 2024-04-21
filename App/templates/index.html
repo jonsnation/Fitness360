@@ -126,9 +126,10 @@
             <label for="exercise-list">Exercises:</label>
             <ul id="exercise-list">
                 <!-- List of exercises will be added dynamically -->
-                {% for workout in user_routines %}
-                <li>{{workout.workout_id}}
-                <button type="button" class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
+                {% for workoutrout in user_routines %}
+                {% set workout = workouts|selectattr("workout_id", "equalto", workoutrout.workout_id)|list|first %}
+                <li>{{workout.exercise_name if workout else 'Unknown'}}
+                <button type="button" class="delete-exercise-btn" data-workout-id="{{ workoutrout.workout_id }}">Delete Exercise</button>
                 </li>
                 {% endfor %}
             </ul>
@@ -169,16 +170,8 @@
         <div class="card" id="routine-info" style="height: 400 px; width:400px;">
             {%if selected_routine and not selected_workout %}
             <a>Routine: {{selected_routine.name}}</a>
-            {% for workoutrout in workout_routines  %}
-                {% if workoutrout.user_id == current_user.id %}
-                    {% if workoutrout.routine_id == selected_routine.routine_id %}
-                    {% for workout in workouts %}
-                        {% if workout.workout_id == workoutrout.workout_id %}
-                        {{workout.exercise_name}}
-                        {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                {% endif %}
+            {% for workout in selected_routine.workout %}
+            <p>{{workout.workout_id}}</p>
             {% endfor %}
             <a class="btn red left edit-btn" id="editBtn">Edit</a>
             {% endif %}
