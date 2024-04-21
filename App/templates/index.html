@@ -6,23 +6,14 @@
 
 {% block content %}
 <style>
-
-/* Added media queries for smaller screens */
-@media screen and (max-width: 600px) {
-    body {
-        font-size: 0.8em;
-    }
-    .popup-content {
-        width: 90%;
-    }
-    .column {
-        width: 100%;
-    }
-    .smaller-image {
-        width: 100%;
-        height: auto;
-    }
+body {
+   background-image: url('https://images.pexels.com/photos/1552252/pexels-photo-1552252.jpeg?cs=srgb&dl=pexels-leonardho-1552252.jpg&fm=jpg');
+   background-size: cover; 
+   background-repeat: no-repeat;
+   background-position: center; 
+   font-family: "Open Sans", sans-serif;
 }
+
 .popup-container {
     position: fixed;
     top: 50%;
@@ -33,7 +24,7 @@
 
 .popup-content {
     padding: 20px;
-    background-color: white;
+    background-color: rgb(206, 196, 196);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -55,12 +46,13 @@
     font-size: 1.5em;
     color: #999;
 }
+
     .custom-black {
     background-color: #1c1c1c; 
 }
     .container{
         padding: 10px;
-        background-color: rgb(216, 212, 212);
+       /* background-color: rgb(216, 212, 212);*/
         display: flex;
         align-items: center;
     }
@@ -111,13 +103,14 @@
             <a href="#" style="font-size:1.2em" class="brand-logo">Let's get ripped: {{current_user.username}} </a>
             </div>
         </nav>
+
         
         <!-- Left column content (Select an Exercise) -->
         <h5>Select An Exercise</h5>
         <div class="input-field col s12">
-            <div class="scrollable-list collection with-scroller">
+            <div class="scrollable-list collection with-scroller" style="background-color: #b2abab;">
                 {% for workout in workouts %}
-                <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                <a href="/app/{{workout.workout_id}}" class="collection-item" style="color:black; background-color: #999; border:none">{{ workout.exercise_name }}</a><br>
                 {% endfor %}
             </div>
         </div>
@@ -126,14 +119,14 @@
 </section>
     
 <div class="row">
-
     <!-- Left middle Column  -->
     <div class="column">
         <!-- Popup container for routine details -->
 {% if selected_routine %}
 <div class="popup-container" id="routine-popup" style="display: none;">
     <div class="popup-content card">
-        <h3 id="routine-popup-title">Routine: {{selected_routine.name}}</h3>
+        <p id="routine-popup-title" style="colour: black; font-size:larger">Routine: {{selected_routine.name}}</p>
+        <p>Click finish to save changes.</p>
         <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
             <label for="routine-name">Update Name:</label>
             <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
@@ -144,23 +137,25 @@
                 {% for workout in user_routines %}
                 {% for workout1 in workouts %}
                 {% if workout1.workout_id == workout.workout_id %}
-                <li>{{workout1.exercise_name}}
-                <button type="button" class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
+                <li style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">{{workout1.exercise_name}}
+                <button type="button" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" 
+                class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
                 </li>
                 {% endif %}
                 {% endfor %}
                 {% endfor %}
             </ul>
+            <p>Select exercise to add to routine:</p>
             <select id="exercise-dropdown">
                 <!-- Dropdown options for exercises will be added dynamically -->
                 {% for workout in workouts %}
                 <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
                 {% endfor %}
             </select>
-            <button type="button" id="add-exercise-btn">Add Exercise</button>
-            <button type="submit" id="finish-btn">Finish</button>
+            <button type="button" id="add-exercise-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Add Exercise</button>
+            <button type="submit" id="finish-btn" style="padding: 5px 10px; border: none; border-radius: 5px; background-color: #0c1a3b; color: white; cursor: pointer;" >Finish</button>
         </form>
-        <button type="button" id="close-popup-btn">Close</button>
+        <button type="button" id="close-popup-btn">X</button>
     </div>
 </div>
 {% endif %}
@@ -190,7 +185,7 @@
         {% endif %}
         <div class="card" id="routine-info" style="height: 400 px; width:400px;">
             {%if selected_routine and not selected_workout %}
-            <a>Routine: {{selected_routine.name}}</a>
+            <a style="color: black; font-size:10">Routine: {{selected_routine.name}}</a>
             {% for workout in selected_routine.workout %}
             {% for workout1 in workouts %}
             {% if workout1.workout_id == workout.workout_id %}
@@ -199,13 +194,7 @@
             <p>Description: {{workout1.description}}</p>
             <p>Muscle Group: {{workout1.muscle_group}}</p>
             <p>Equipment: {{workout1.equipment}}</p>
-            <p>Rating: {{workout1.get_rating()}}</p>
-            {%for i in range(workout1.get_rating())%}
-                <i class="material-icons">star</i>
-            {%endfor%}
-            {%for i in range(10-workout1.get_rating())%}
-                <i class="material-icons">star_border</i>
-            {%endfor%}
+            <p>Rating: {{workout1.rating}}</p>
             </div>
             {% endif %}
             {% endfor %}
@@ -267,31 +256,36 @@
         const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
         const url = `/addworkout/${selectedRoutineId}/${selectedWorkoutId}`;
         
-        // Make an AJAX request to the server
+        // AJAX request
         fetch(url, {
             method: 'GET'
-        })
+        })//error checking
         .then(response => {
-            // Check if the response was successful
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            // Assuming the response contains JSON data indicating success or failure
             return response.json();
         })
         .then(data => {
-            // Handle the response data accordingly (e.g., show success message)
-            alert(data.message); // Replace alert with your preferred UI update method
-            // Optionally, you can also update the form or UI based on the response
-            // For example, you can refresh the page or update specific elements
-            location.reload(); // Example of refreshing the page
-        })
+    alert(data.message); 
+
+    // Assuming data.workouts is the updated list of workouts
+    const exerciseList = document.getElementById('exercise-list');
+    exerciseList.innerHTML = ''; // Clear the list
+    data.workouts.forEach(workout => {
+        const li = document.createElement('li');
+        li.textContent = workout.exercise_name;
+        exerciseList.appendChild(li);
+    });
+
+    //location.reload();
+    })
         .catch(error => {
-            // Handle errors (e.g., show error message)
             console.error('There was a problem with the fetch operation:', error);
         });
     });
 });
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const deleteExerciseBtns = document.querySelectorAll('.delete-exercise-btn');
@@ -301,27 +295,23 @@ document.addEventListener('DOMContentLoaded', function () {
             const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
             const url = `/deleteworkout/${selectedRoutineId}/${selectedWorkoutId}`;
             
-            // Make an AJAX request to the server
+            // AJAX request 
             fetch(url, {
                 method: 'GET'
-            })
+            })//error checking
             .then(response => {
-                // Check if the response was successful
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                // Assuming the response contains JSON data indicating success or failure
                 return response.json();
             })
             .then(data => {
-                // Handle the response data accordingly (e.g., show success message)
-                alert(data.message); // Replace alert with your preferred UI update method
-                // Optionally, you can also update the form or UI based on the response
-                // For example, you can refresh the page or update specific elements
-                location.reload(); // Example of refreshing the page
+                
+                alert(data.message); 
+             
+                location.reload(); 
             })
             .catch(error => {
-                // Handle errors (e.g., show error message)
                 console.error('There was a problem with the fetch operation:', error);
             });
         });
