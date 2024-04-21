@@ -2,7 +2,7 @@ from App.models import WorkoutRoutine
 from App.database import db
 
 def get_all_workout_routines():
-    return 
+    return WorkoutRoutine.query.all()
 
 def get_workout_routines_json():
     workout_routines = get_all_workout_routines()

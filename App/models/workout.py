@@ -10,6 +10,7 @@ class Workout(db.Model):
     equipment = db.Column(db.String, nullable=True)
     rating = db.Column(db.Float, nullable=True)
     description = db.Column(db.String, nullable=True)
+    routines =db.Relationship('WorkoutRoutine', backref='workout')
 
     def __init__(self, exercise_name, exercise_image1, exercise_image2, muscle_group, equipment, rating, description):
         self.exercise_name = exercise_name

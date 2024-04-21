@@ -167,6 +167,11 @@
         <div class="card" id="routine-info">
             {%if selected_routine and not selected_workout %}
             <a>Routine: {{selected_routine.name}}</a>
+            
+            {%if selected_routine.routine_id == workout_routines.routine_id%}
+            <a>Test</a>
+            {% endif %}
+
             {% for workout in selected_routine.workout %}
             <p>{{workout.workout_id}}</p>
             {% endfor %}

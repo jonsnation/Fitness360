@@ -75,12 +75,13 @@ def view_routine_page(routine_id):
     workouts = get_all_workouts()
     routines = get_user_routines(jwt_current_user.id)
     user_routines = get_all_workouts_in_routines(routine_id)
+    workout_routines = get_all_workout_routines()
 
     if selected_routine is None:
         flash('Routine not valid.')
         return redirect(url_for('index_views.index_page'))
     flash('Here is your routine.')
-    return render_template('index.html', selected_routine=selected_routine, workouts=workouts, routines=routines, user_routines=user_routines)
+    return render_template('index.html', selected_routine=selected_routine, workouts=workouts, routines=routines, user_routines=user_routines, workout_routines=workout_routines)
 
     
 @index_views.route('/init', methods=['GET'])
