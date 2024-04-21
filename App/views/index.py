@@ -124,19 +124,28 @@ def create_routine_route():
         flash("Could not make routine as it already exist")
         return  redirect(url_for('index_views.index_page'))
 
-# Add workout to routine
+from flask import jsonify
+
 @index_views.route('/addworkout/<int:routine_id>/<int:workout_id>', methods=['GET'])
 @jwt_required()
 def add_workout(routine_id, workout_id):
-    routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
+    selected_routine = get_routine_by_id(routine_id)  # Retrieve the selected routine
+    workouts1 = get_all_workouts()
+    
+    if selected_routine:
+        # Perform actions related to the selected routine
+        routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
 
-    if routine_exercise is None:
-        add_workout_to_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
-        flash('Workout added')
-        return  redirect(url_for('index_views.index_page'))
+        if routine_exercise is None:
+            add_workout_to_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
+            workouts = get_all_workouts_in_routines(routine_id=routine_id)  
+            return jsonify({'message': 'Workout added', 'status': 'success'})
+        else:
+            return jsonify({'message': 'Workout not added', 'status': 'error'})
     else:
-        flash('Workout not added')
-        return  redirect(url_for('index_views.index_page'))
+        return jsonify({'message': 'Selected routine not found', 'status': 'error'})
+
+
 
 #delete workout form routine
 @index_views.route('/deleteworkout/<int:routine_id>/<int:workout_id>', methods=['GET'])
@@ -146,11 +155,9 @@ def delete_workout(routine_id, workout_id):
 
     if routine_exercise:
         remove_workout_from_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
-        flash('Workout removed')
-        return  redirect(url_for('index_views.index_page'))
+        return jsonify({'message': 'Workout removed', 'status': 'success'})
     else:
-        flash('Workout not removed')
-        return  redirect(url_for('index_views.index_page'))
+        return jsonify({'message': 'Workout not removed', 'status': 'error'})
 
 # Delete routine
 @index_views.route('/routine/delete/<int:routine_id>', methods=['GET'])

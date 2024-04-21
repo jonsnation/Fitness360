@@ -132,7 +132,7 @@ body {
             <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
             <br>
             <label for="exercise-list">Exercises:</label>
-            <ul id="exercise-list">
+            <ul id="exercise-list" style="overflow-y: auto; max-height: 200px;">
                 <!-- List of exercises will be added dynamically -->
                 {% for workout in user_routines %}
                 {% for workout1 in workouts %}
@@ -251,50 +251,46 @@ body {
 </section>
 
 <script>
+    // Add Exercise Functionality
     document.addEventListener('DOMContentLoaded', function () {
     const addExerciseBtn = document.getElementById('add-exercise-btn');
     addExerciseBtn.addEventListener('click', function () {
         const selectedWorkoutId = document.getElementById('exercise-dropdown').value;
-        const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
+        const selectedRoutineId = '{{ selected_routine.routine_id }}'; 
         const url = `/addworkout/${selectedRoutineId}/${selectedWorkoutId}`;
         
         // AJAX request
         fetch(url, {
             method: 'GET'
-        })//error checking
+        })
+        //error checking
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             return response.json();
         })
+
         .then(data => {
-    alert(data.message); 
+                // Display success message
+                alert(data.message); 
 
-    // Assuming data.workouts is the updated list of workouts
-    const exerciseList = document.getElementById('exercise-list');
-    exerciseList.innerHTML = ''; // Clear the list
-    data.workouts.forEach(workout => {
-        const li = document.createElement('li');
-        li.textContent = workout.exercise_name;
-        exerciseList.appendChild(li);
-    });
+        });
 
-    //location.reload();
-    })
+        })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
     });
-});
 
 
+    //delete exercise functionality
 document.addEventListener('DOMContentLoaded', function () {
     const deleteExerciseBtns = document.querySelectorAll('.delete-exercise-btn');
     deleteExerciseBtns.forEach(function(btn) {
         btn.addEventListener('click', function () {
             const selectedWorkoutId = btn.dataset.workoutId;
-            const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
+            const selectedRoutineId = '{{ selected_routine.routine_id }}'; 
             const url = `/deleteworkout/${selectedRoutineId}/${selectedWorkoutId}`;
             
             // AJAX request 
@@ -311,7 +307,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 alert(data.message); 
              
-                location.reload(); 
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
