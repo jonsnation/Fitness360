@@ -198,17 +198,17 @@ Are you ready to transform your life? Our workout website is your ultimate fitne
 Dive into a vast library of workout routines, tailored for every fitness level.
 Join us now and unleash the healthier and happier YOU!
 
-# Website link
+## Website link
 
-You can access this website through this link- [Website Link](https://github.com/jonsnation/INFO2602WORKOUTPROJECT/tree/main)
+You can access this website through this link- [Repository Link](https://github.com/jonsnation/INFO2602WORKOUTPROJECT/tree/main)
 
-# Project Summary
+## Project Summary
 
 The project aims to develop an online platform for selecting workouts and implementing them into workout routines custom to users. Creating and tracking workout routines on paper can be considered outdated in this day and age. In addition, this online app tracker allows for consistent tracking of a user and their routines from anywhere an internet connection can be established. Additionally, the privilege of tracking previous workout routines can be very useful when others ask for the user’s past routines. 
 
 Workout enthusiasts may explore a plethora of workouts and add them to their workout routine. Fitness 360 is an extensive website that offers users a seamless experience as they explore and discover new workouts across various types.
 
-# Features implemented
+## Features implemented
 
 - Browse Workouts: Users can scroll through workouts to select and add to their routines.
 
@@ -219,3 +219,50 @@ Workout enthusiasts may explore a plethora of workouts and add them to their wor
 - Technical Components
 
 
+## Installation 
+
+<details>
+<summary>
+  <code>Here is how you can access Fitness 360</code>
+</summary>
+
+- [Repository Link](https://github.com/jonsnation/INFO2602WORKOUTPROJECT/tree/main)
+
+<code>Install Flask and dependencies: </code>
+
+Run the following command to install the required dependencies:
+
+```sh
+pip install -r requirements.txt
+```
+
+Initialize the app:
+
+```sh
+flask init
+```
+
+Run the app:
+
+```sh
+flask run
+```
+
+</details>
+
+
+## Authentication Routes
+
+1. <u>/login</u> [POST]: Logs in the user.
+2. <u>/signup</u> [POST]: Signs up a new user.
+3. <u>/logout</u> [GET]: Logs out the user.
+
+## Snippets 
+
+Mockup<br/>
+
+![Wireframe 1](images/Wireframes-2.png)
+
+![Wireframe 1](images/Wireframes-5.png)
+
+![Wireframe 1](images/Wireframes-6.png)
