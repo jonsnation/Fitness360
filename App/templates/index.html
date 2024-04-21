@@ -165,7 +165,12 @@
                 <p>Description: {{selected_workout.description}}</p>
                 <p>Muscle Group: {{selected_workout.muscle_group}}</p>
                 <p>Equipment: {{selected_workout.equipment}}</p>
-                <p>Rating: {{selected_workout.rating}}</p>
+                {%for i in range(selected_workout.get_rating())%}
+                    <i class="material-icons">star</i>
+                {%endfor%}
+                {%for i in range(10-selected_workout.get_rating())%}
+                    <i class="material-icons">star_border</i>
+                {%endfor%}
             </div>  
         </div>
         {% endif %}
