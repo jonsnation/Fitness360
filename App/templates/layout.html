@@ -16,19 +16,21 @@
   <body>
     
       <nav class="nav-wrapper custom-black" style="z-index: 10">
-          <div class="nav-wrapper">
-              <a href="#!" class="brand-logo center"><img src="{{ url_for('static', filename='f360Logo.png') }}" style="height: 50px; margin-right: 50px;">{% block page %}{% endblock %}</a>
-              {% if is_authenticated %}
-              <ul id="nav-mobile" class="right">
-                <li><a href="/logout">Logout</a></li>
-              </ul>
-              {% else %}
-              <ul class="right">
-                <a>It's been long enough. Your fitness journey starts here.</a>
-              </ul>
-              {% endif %}
-              
-          </div>
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo center" style="display: flex; align-items: center; margin-right: 70px;">
+            <img src="{{ url_for('static', filename='f360Logo.png') }}" style="height: 70px;">
+            {% block page %}{% endblock %}
+          </a>
+          {% if is_authenticated %}
+          <ul id="nav-mobile" class="right">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+          {% else %}
+          <ul class="right">
+            <a>It's been long enough. Your fitness journey starts here.</a>
+          </ul>
+          {% endif %}
+        </div>
       </nav>
       <style>
           .navbar-form label {
