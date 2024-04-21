@@ -5,7 +5,6 @@ class WorkoutRoutine(db.Model):
     routine_id = db.Column(db.Integer,  db.ForeignKey('routine.routine_id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     workout_id = db.Column(db.Integer, db.ForeignKey('workout.workout_id'), nullable=False)
-    
 
     def __init__(self, name, user_id, workout_id, routine_id):
         self.name = name

@@ -14,7 +14,6 @@ from App.controllers import (
     create_routine,
     create_routine_declaration,
     find_routine,
-    find_workout,
     get_all_routines,
     get_routine_by_name,
     get_routine_by_id,
@@ -27,7 +26,6 @@ from App.controllers import (
     get_all_workouts,
     get_workout_by_id,
     get_workout_by_name,
-    remove_workout_from_routine,
 )
 
 
@@ -40,43 +38,26 @@ def login_page():
 # @index_views.route('/app', defaults={'workout_id': None}, methods=['GET'])
 @index_views.route('/app', methods=['GET'])
 @index_views.route('/app/<workout_id>', methods=['GET'])
-@index_views.route('/app/routine/<routine_id>', methods=['GET'])
-@index_views.route('/app/<workout_id>/<routine_id>', methods=['GET'])
+@index_views.route('/app/<routine_id>', methods=['GET'])
 @jwt_required()
-def index_page(workout_id = 1, routine_id = 1):
+def index_page(workout_id = 1):
     workouts = get_all_workouts()
-    routines = get_user_routines(jwt_current_user.id)
-    user_routines = get_all_workouts_in_routines(routine_id)
-    workout_routines = get_all_workout_routines()
-    selected_routine = get_routine_by_id(routine_id)
-
+    routine = create_routine("back day", 1)
+    add_selected_workout_to_routine(routine, 5)
+    add_selected_workout_to_routine(routine, 6)
+    add_selected_workout_to_routine(routine, 1)
+    routines = get_user_routines(1)
+    declared_routine = get_routine_by_id(routine_id)
+    
+    
 
     if workout_id is not None:
         selected_workout = Workout.query.get(workout_id)
     else:
         selected_workout = None
-    
-    print("here for workout routine:")
-    print(workout_routines)
-    print("?")
-    return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user, user_routines=user_routines)
 
-@index_views.route('/app/view/<routine_id>')
-@jwt_required()
-def view_routine_page(routine_id):
-    selected_routine= get_routine_by_id(routine_id)
-    workouts = get_all_workouts()
-    routines = get_user_routines(jwt_current_user.id)
-    user_routines = get_all_workouts_in_routines(routine_id)
+    return render_template('index.html', workouts=workouts, routines=routines, workout_routines=workout_routines, selected_workout=selected_workout, selected_routine=selected_routine, current_user=jwt_current_user)
 
-    if selected_routine is None:
-        flash('Routine not valid.')
-        return redirect(url_for('index_views.index_page'))
-    flash('Here is your routine.')
-    return render_template('index.html', selected_routine=selected_routine, workouts=workouts, routines=routines, user_routines=user_routines)
-
-
-    
 @index_views.route('/init', methods=['GET'])
 def initialize():
     db.drop_all()
@@ -105,6 +86,9 @@ def initialize():
     if null_found:
         print("Null value(s) found and skipped")
     print("parsed csv successfully")
+    # workouts = Workout.query.all()
+    # for workout in workouts:
+    #     print(workout.get_json())
     create_user('bob', 'bobpass')
     print('database intialized')
 
@@ -118,74 +102,52 @@ def health_check():
 # Create routines
 @index_views.route('/app/create', methods=['POST'])
 @jwt_required()
-def create_routine_route():
-    data = request.form
-    search_routine = find_routine(jwt_current_user, data['routine_name'])# not essential but up to y'all
-    if not search_routine:
-        routine = create_routine(jwt_current_user, data['routine_name'])
-        flash('new routine made \(￣︶￣*\))')
-        return  redirect(url_for('index_views.index_page'))
-    else:
-        flash("Could not make routine as it already exist")
-        return  redirect(url_for('index_views.index_page'))
-
-# Add workout to routine
-@index_views.route('/addworkout/<int:routine_id>/<int:workout_id>', methods=['GET'])
-@jwt_required()
-def add_workout(routine_id, workout_id):
-    routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
-
-    if routine_exercise is None:
-        add_workout_to_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
-        flash('Workout added')
-        return  redirect(url_for('index_views.index_page'))
-    else:
-        flash('Workout not added')
-        return  redirect(url_for('index_views.index_page'))
-
-#delete workout form routine
-@index_views.route('/deleteworkout/<int:routine_id>/<int:workout_id>', methods=['GET'])
-@jwt_required()
-def delete_workout(routine_id, workout_id):
-    routine_exercise = find_workout(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
-
-    if routine_exercise:
-        remove_workout_from_routine(jwt_current_user, routine_id=routine_id, workout_id=workout_id)
-        flash('Workout removed')
-        return  redirect(url_for('index_views.index_page'))
-    else:
-        flash('Workout not removed')
-        return  redirect(url_for('index_views.index_page'))
-
-# Delete routine
-@index_views.route('/routine/delete/<int:routine_id>', methods=['GET'])
-@jwt_required()
-def delete_routine_by_id(routine_id):
-    routine = get_routine_by_id(routine_id)
-
-    if not routine:
-        flash('routine does not exist')
-
-
-    deleted_routine = delete_routine(routine_id)
-    if deleted_routine:
-        flash('routine deleted')
+def create_routine_route():   
+    try:
+        data = request.form
+        routine_name = data["name"]
+        routine = create_routine(current_user.id, routine_name)
+        if  routine == create_routine(current_user.id, routine_name):
+            routine_workouts = request.form.getlist('selected_workouts[]')
+            for workout_id in routine_workouts:
+                add_selected_workout_to_routine(routine, workout_id)
+            flash('New routine created!')
+        else: 
+            flash('Error creating routine')
+    except Exception as e:
+        flash(f'Error creating routine: {str(e)}', 'error')
     return redirect(url_for('index_views.index_page'))
 
-@index_views.route('/updatename/<int:routine_id>', methods=['POST'])
-@jwt_required()
-def update_name(routine_id):
-    routine = get_routine_by_id(routine_id)
 
-    if not routine:
-        flash('Routine does not exist')
-        return redirect(url_for('index_views.index_page'))
 
-    new_name = request.form.get('name') 
+# # View/Edit routine
+# @routine_views.route('/routine/edit/<int:id>', methods=['GET', 'POST'])
+# @jwt_required
+# def edit_routine2(id):
+#     routine = get_routine(id)
+#     if not routine or routine.user_id != jwt_current_user.id:
+#         return redirect(url_for('user_views.display_routines'))
 
-    if update_routine(routine_id, new_name):
-        flash('Routine updated')
-    else:
-        flash('Failed to update routine')
+#     if request.method == 'POST':
+#         name = request.form.get('name')
+#         description = request.form.get('description')
+#         updated_routine = update_routine(id, name=name, description=description)
+#         if updated_routine:
+#             return redirect(url_for('user_views.display_routines'))
 
-    return redirect(url_for('index_views.index_page'))
+#     workouts = get_all_workouts()
+#     return render_template('routine_form.html', form_action=url_for('user_views.edit_routine2', id=id), routine=routine, workouts=workouts)
+
+# # Delete routine
+# @routine_views.route('/routine/delete/<int:id>', methods=['POST'])
+# @jwt_required
+# def delete_routine2(id):
+#     routine = get_routine(id)
+#     if not routine or routine.user_id != jwt_current_user.id:
+#         return redirect(url_for('user_views.display_routines'))
+
+#     deleted_routine = delete_routine(id)
+#     if deleted_routine:
+#         return redirect(url_for('user_views.display_routines'))
+
+#     return 'Failed to delete routine', 400

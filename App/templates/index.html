@@ -6,40 +6,7 @@
 
 {% block content %}
 <style>
-
-.popup-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-}
-
-.popup-content {
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.popup-content form {
-    margin-bottom: 10px;
-}
-
-.popup-content button {
-    margin-right: 10px;
-}
-.popup-content #close-popup-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5em;
-    color: #999;
-}
-    .custom-black {
+         .custom-black {
     background-color: #1c1c1c; 
 }
     .container{
@@ -81,8 +48,8 @@
         clear: both;
     }
     .smaller-image {
-        width: 300px; /* Adjust as needed */
-        height: 400px;
+        width: 50%; 
+        height: auto;
     }
 </style>
 
@@ -101,7 +68,11 @@
         <div class="input-field col s12">
             <div class="scrollable-list collection with-scroller">
                 {% for workout in workouts %}
-                <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                    {% if workout.id == selected_workout.id %}
+                        <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
+                    {% else %}
+                        <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -110,228 +81,105 @@
 </section>
     
 <div class="row">
-
-    <!-- Left middle Column  -->
-    <div class="column">
-        <!-- Popup container for routine details -->
-{% if selected_routine %}
-<div class="popup-container" id="routine-popup" style="display: none;">
-    <div class="popup-content card">
-        <h3 id="routine-popup-title">Routine: {{selected_routine.name}}</h3>
-        <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
-            <label for="routine-name">Update Name:</label>
-            <input type="text" id="routine-name" name="name" value="{{selected_routine.name}}">
-            <br>
-            <label for="exercise-list">Exercises:</label>
-            <ul id="exercise-list">
-                <!-- List of exercises will be added dynamically -->
-                {% for workout in user_routines %}
-                {% for workout1 in workouts %}
-                {% if workout1.workout_id == workout.workout_id %}
-                <li>{{workout1.exercise_name}}
-                <button type="button" class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
-                </li>
-                {% endif %}
-                {% endfor %}
-                {% endfor %}
-            </ul>
-            <select id="exercise-dropdown">
-                <!-- Dropdown options for exercises will be added dynamically -->
-                {% for workout in workouts %}
-                <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
-                {% endfor %}
-            </select>
-            <button type="button" id="add-exercise-btn">Add Exercise</button>
-            <button type="submit" id="finish-btn">Finish</button>
-        </form>
-        <button type="button" id="close-popup-btn">Close</button>
-    </div>
-</div>
-{% endif %}
-
-
-
-        <!-- Middle column content (Selected Workout) -->
-        {% if selected_workout %}
-        <div class="card" style="width: 500px">
-            <div class = "card-image" style="height:400px; overflow: hidden">
-                <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
+    <div class="column middle center">
+        <!--routine form-->
+        <div id="addRoutineModal" class="modal" style="display:none;">
+            <div class="modal-content">
+            <h4>Create a Routine</h4>
+            <form name="routine" id="routineForm" method="POST" action="/app/create">
+                <div class="input-field">
+                <input id="name" type="text" name="name" required>
+                <label for="name">Routine Name</label>
+                    </div>
+                    <!-- Exercise selection -->
+                        <div class="input-field">
+                            <select id="exerciseSelect" name="selected_workouts[]" multiple>
+                                <option value="" disabled selected></option>
+                                {% for workout in workouts %}
+                                <option value="{{ workout.workout_id }}">{{ workout.exercise_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="exerciseSelect">Select Exercise(s)</label>
+                        </div>
+                        <button class="btn waves-effect waves-light" type="button" id="addExerciseBtn">Add Exercise</button>
+                        <button class="btn waves-effect waves-light" type="submit">Create</button>
+            </form>
             </div>
-            <div class="card-content">
-                <span class = "card-title">
-                {{selected_workout.exercise_name}}
-                </span>
-                <p>Workout Name: {{selected_workout.exercise_name}}</p>
-                <p>Description: {{selected_workout.description}}</p>
-                <p>Muscle Group: {{selected_workout.muscle_group}}</p>
-                <p>Equipment: {{selected_workout.equipment}}</p>
-                <p>Rating: {{selected_workout.rating}}</p>
-            </div>  
-        </div>
-        {% endif %}
-        <div class="card" id="routine-info" style="height: 400 px; width:400px;">
-            {%if selected_routine and not selected_workout %}
-            <a>Routine: {{selected_routine.name}}</a>
-            {% for workout in selected_routine.workout %}
-            {% for workout1 in workouts %}
-            {% if workout1.workout_id == workout.workout_id %}
-            <div class="card">
-            <p>Name: {{workout1.exercise_name}}</p>
-            <p>Description: {{workout1.description}}</p>
-            <p>Muscle Group: {{workout1.muscle_group}}</p>
-            <p>Equipment: {{workout1.equipment}}</p>
-            <p>Rating: {{workout1.rating}}</p>
+            <div class="modal-footer">
+            <button class="modal-close btn-flat" id="closeModalBtn">Cancel</button>
             </div>
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-            <a class="btn red left edit-btn" id="editBtn">Edit</a>
-            {% endif %}
-            <div>
-        </div>
-        </div>
     </div>
-
-    <!-- Right Middle Column  -->
-</div>
-
-
-<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh; padding-right: 15px; padding-left: 15px;">
-
-  <!-- Right column content (Routines) -->
-<ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top: 0x; overflow-y: scroll; width: 25vw;">
-    <nav class="nav-extended custom-black">
-        <div class="nav-wrapper">
-            <a href="#" style="font-size: 1.2em;" class="brand-logo">{{ current_user.username }}'s Routines </a>
-            <a class="right" href="/logout">Logout</a>
+       <!-- Middle column content (Selected Workout) -->
+       {% if selected_workout %}
+       <div class="card">
+           <div class="card-image">
+               <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
+           </div>
+           <div class="card-content">
+               <span class = "card-title">
+               {{selected_workout.exercise_name}}
+               </span>
+               <p>Workout Name: {{selected_workout.exercise_name}}</p>
+               <p>Description: {{selected_workout.description}}</p>
+               <p>Muscle Group: {{selected_workout.muscle_group}}</p>
+               <p>Equipment: {{selected_workout.equipment}}</p>
+               <p>Rating: {{selected_workout.rating}}</p>
+           </div>  
+       </div>
+       {% endif %}
+            </div>
         </div>
 
-    </nav>
+             
+   
+<section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
+    
+        <!-- Right column content (Routines) -->
+         <!-- Add your routines content here -->
 
-    <!-- Create Routine here -->
-    <h6>Create a routine</h6>
-    <form class="row" style="height: min-content;" method="POST" action="/app/create">
-        <div class="card col s12" style="height: 20vh">
-            <input id="routine_name" method="POST" type="text" name="routine_name">
-            <label for="name_inline">Name</label>
-            <input class="btn grey right bottom" type="submit" value="SUBMIT" id="createBtn" />
-        </div>
-    </form>
-
-    <!-- Display Routines -->
-    <h5>Select A Routine</h5>
-        <div class="input-field col s12">
-            <div class="scrollable-list collection with-scroller">
-                {% for routine in routines %}
-                <div class="collection-item" style="margin-bottom: 10px; display: block;">
-                    <p>{{ routine.name }}</p>
-                    <a href="/app/view/{{routine.routine_id}}"class="btn red left view-btn" id="viewBtn">View</a>
-                    <a href="/routine/delete/{{routine.routine_id}}"class="btn red left delete-btn" id="deleteBtn">Delete</a>
+        <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top:65px">
+            <nav class="nav-extended custom-black">
+                <div class="nav-wrapper">
+                <a href="#" style="font-size:1.2em" class="brand-logo">{{current_user.username}}'s Routines </a>
                 </div>
+            </nav>
+
+
+        <input class = "btn grey right bottom" type="submit" value="Add" id="createBtn" style="margin-left:0">
+        
+        <div class="row " style="height: 20vh;">
+                {% for routine in routines%}
+                       <p>{{routine.name}}</p>
                 {% endfor %}
             </div>
-        </div>
-</ul>
+    
+  
+        </ul>
 </section>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const addExerciseBtn = document.getElementById('add-exercise-btn');
-    addExerciseBtn.addEventListener('click', function () {
-        const selectedWorkoutId = document.getElementById('exercise-dropdown').value;
-        const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
-        const url = `/addworkout/${selectedRoutineId}/${selectedWorkoutId}`;
-        
-        // Make an AJAX request to the server
-        fetch(url, {
-            method: 'GET'
-        })
-        .then(response => {
-            // Check if the response was successful
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            // Assuming the response contains JSON data indicating success or failure
-            return response.json();
-        })
-        .then(data => {
-            // Handle the response data accordingly (e.g., show success message)
-            alert(data.message); // Replace alert with your preferred UI update method
-            // Optionally, you can also update the form or UI based on the response
-            // For example, you can refresh the page or update specific elements
-            location.reload(); // Example of refreshing the page
-        })
-        .catch(error => {
-            // Handle errors (e.g., show error message)
-            console.error('There was a problem with the fetch operation:', error);
-        });
-    });
-});
+    // Wait until the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+    const addButton = document.getElementById('createBtn');
+    const modal = document.getElementById('addRoutineModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
 
-document.addEventListener('DOMContentLoaded', function () {
-    const deleteExerciseBtns = document.querySelectorAll('.delete-exercise-btn');
-    deleteExerciseBtns.forEach(function(btn) {
-        btn.addEventListener('click', function () {
-            const selectedWorkoutId = btn.dataset.workoutId;
-            const selectedRoutineId = '{{ selected_routine.routine_id }}'; // Assuming you have access to selected_routine in your template
-            const url = `/deleteworkout/${selectedRoutineId}/${selectedWorkoutId}`;
-            
-            // Make an AJAX request to the server
-            fetch(url, {
-                method: 'GET'
-            })
-            .then(response => {
-                // Check if the response was successful
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                // Assuming the response contains JSON data indicating success or failure
-                return response.json();
-            })
-            .then(data => {
-                // Handle the response data accordingly (e.g., show success message)
-                alert(data.message); // Replace alert with your preferred UI update method
-                // Optionally, you can also update the form or UI based on the response
-                // For example, you can refresh the page or update specific elements
-                location.reload(); // Example of refreshing the page
-            })
-            .catch(error => {
-                // Handle errors (e.g., show error message)
-                console.error('There was a problem with the fetch operation:', error);
-            });
-        });
-    });
-});
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Get elements
-    const popup = document.getElementById('routine-popup');
-    const editButtons = document.querySelectorAll('.edit-btn');
-    const closePopupBtn = document.getElementById('close-popup-btn');
-
-    // Function to show the pop-up
-    function showPopup() {
-        popup.style.display = 'block';
+    // Function to show the modal
+    function showModal() {
+        modal.style.display = 'block';
     }
 
-    // Function to close the pop-up
-    function closePopup() {
-        popup.style.display = 'none';
+    // Function to hide the modal
+    function hideModal() {
+        modal.style.display = 'none';
     }
 
-    // Add click event listener to edit buttons
-    editButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            showPopup();
-        });
-    });
+    // Event listeners
+    addButton.addEventListener('click', showModal);
+    closeModalBtn.addEventListener('click', hideModal);
 
-    // Add click event listener to close button
-    closePopupBtn.addEventListener('click', function () {
-        closePopup();
-    });
 });
-
 </script>
 
 
