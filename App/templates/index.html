@@ -126,9 +126,13 @@
             <ul id="exercise-list">
                 <!-- List of exercises will be added dynamically -->
                 {% for workout in user_routines %}
-                <li>{{workout.workout_id}}
+                {% for workout1 in workouts %}
+                {% if workout1.workout_id == workout.workout_id %}
+                <li>{{workout1.exercise_name}}
                 <button type="button" class="delete-exercise-btn" data-workout-id="{{ workout.workout_id }}">Delete Exercise</button>
                 </li>
+                {% endif %}
+                {% endfor %}
                 {% endfor %}
             </ul>
             <select id="exercise-dropdown">
@@ -169,7 +173,17 @@
             {%if selected_routine and not selected_workout %}
             <a>Routine: {{selected_routine.name}}</a>
             {% for workout in selected_routine.workout %}
-            <p>{{workout.workout_id}}</p>
+            {% for workout1 in workouts %}
+            {% if workout1.workout_id == workout.workout_id %}
+            <div class="card">
+            <p>Name: {{workout1.exercise_name}}</p>
+            <p>Description: {{workout1.description}}</p>
+            <p>Muscle Group: {{workout1.muscle_group}}</p>
+            <p>Equipment: {{workout1.equipment}}</p>
+            <p>Rating: {{workout1.rating}}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
             {% endfor %}
             <a class="btn red left edit-btn" id="editBtn">Edit</a>
             {% endif %}
