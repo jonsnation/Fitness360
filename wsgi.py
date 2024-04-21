@@ -1,6 +1,7 @@
 import click, pytest, sys, csv
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+from App.default_config import *
 
 from App.database import db, get_migrate
 from App.main import create_app
