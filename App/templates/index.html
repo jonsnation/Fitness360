@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Fitness 360{% endblock %}
-{% block page %}Fitness 360{% endblock %}
+{% block page %}{% endblock %}
 
 {{ super() }}
 
@@ -151,7 +151,7 @@ body {
 {% if selected_routine %}
 <div class="popup-container" id="routine-popup" style="display: none;">
     <div class="popup-content card">
-        <p id="routine-popup-title" style="colour: black; font-size:larger">Routine: {{selected_routine.name}}</p>
+        <p id="routine-popup-title" style="color: black; font-size:larger">Routine: {{selected_routine.name}}</p>
         <p>Click finish to save changes.</p>
         <form id="routine-form" action="/updatename/{{ selected_routine.routine_id }}" method="POST">
             <label for="routine-name">Update Name:</label>
@@ -176,6 +176,7 @@ body {
             <p>Select exercise to add to routine:</p>
             <select id="exercise-dropdown">
                 <!-- Dropdown options for exercises will be added dynamically -->
+                <option value="" disabled selected>Select exercise here...</option>
                 {% for workout in workouts %}
                 <option value="{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</option>
                 {% endfor %}
@@ -259,7 +260,7 @@ body {
     </nav>
 
     <!-- Create Routine here -->
-    <h6>Create a routine</h6>
+    <h5>Create a routine</h5>
     <form class="row" style="height: min-content;" method="POST" action="/app/create">
         <div class="card col s12" style="height: 20vh">
             <input id="routine_name" method="POST" type="text" name="routine_name">
