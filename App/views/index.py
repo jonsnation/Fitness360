@@ -1,11 +1,17 @@
 from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify,flash, url_for
+from flask import Blueprint, redirect, render_template, request, send_from_directory, jsonify,flash, url_for
 from App.models import db, User, Workout, Routine
+from flask_jwt_extended import jwt_required, current_user as jwt_current_user, unset_jwt_cookies, set_access_cookies
+
+import csv
 from flask_jwt_extended import jwt_required, current_user as jwt_current_user, unset_jwt_cookies, set_access_cookies
 
 import csv
 
 from App.controllers import (
     create_user,
+    get_user_by_username,
+    get_user,
     get_user_by_username,
     get_user,
     get_all_users,
@@ -16,6 +22,8 @@ from App.controllers import (
     find_routine,
     find_workout,
     get_all_routines,
+    get_routine_by_name,
+    get_routine_by_id,
     get_routine_by_name,
     get_routine_by_id,
     get_user_routines,
@@ -81,6 +89,7 @@ def initialize():
     db.drop_all()
     db.create_all()
     null_found = False
+    null_found = False
     # Load workouts from CSV file
     with open('workout.csv', encoding='unicode_escape') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -88,6 +97,7 @@ def initialize():
             print(row)
             # Check for null values in the row
             if not all(row.values()):
+                null_found = True
                 null_found = True
                 continue
             workout = Workout(exercise_name=row['Exercise_Name'], 
