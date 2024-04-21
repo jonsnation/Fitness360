@@ -6,12 +6,53 @@
 
 {% block content %}
 <style>
-         .custom-black {
+body {
+   background-image: url('https://images.pexels.com/photos/1552252/pexels-photo-1552252.jpeg?cs=srgb&dl=pexels-leonardho-1552252.jpg&fm=jpg');
+   background-size: cover; 
+   background-repeat: no-repeat;
+   background-position: center; 
+   font-family: "Open Sans", sans-serif;
+}
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.popup-content {
+    padding: 20px;
+    background-color: rgb(206, 196, 196);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content form {
+    margin-bottom: 10px;
+}
+
+.popup-content button {
+    margin-right: 10px;
+}
+.popup-content #close-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #999;
+}
+
+    .custom-black {
     background-color: #1c1c1c; 
 }
     .container{
         padding: 10px;
-        background-color: rgb(216, 212, 212);
+       /* background-color: rgb(216, 212, 212);*/
         display: flex;
         align-items: center;
     }
@@ -48,7 +89,7 @@
         clear: both;
     }
     .smaller-image {
-        width: 50%; 
+        width: 50%; /* Adjust as needed */
         height: auto;
     }
 </style>
@@ -62,17 +103,17 @@
             <a href="#" style="font-size:1.2em" class="brand-logo">Let's get ripped: {{current_user.username}} </a>
             </div>
         </nav>
-        
+
         <!-- Left column content (Select an Exercise) -->
         <h5>Select An Exercise</h5>
         <div class="input-field col s12">
-            <div class="scrollable-list collection with-scroller">
+            <div class="scrollable-list collection with-scroller" style="background-color: #b2abab;">
                 {% for workout in workouts %}
-                    {% if workout.id == selected_workout.id %}
-                        <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
-                    {% else %}
-                        <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
-                    {% endif %}
+                {% if workout.id == selected_workout.id %}
+                <a href="/app/{{workout.workout_id}}" class="collection-item active">{{ workout.exercise_name }}</a>
+                {% else %}
+                <a href="/app/{{workout.workout_id}}" class="collection-item">{{ workout.exercise_name }}</a><br>
+                {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -82,105 +123,66 @@
     
 <div class="row">
     <div class="column middle center">
-        <!--routine form-->
-        <div id="addRoutineModal" class="modal" style="display:none;">
-            <div class="modal-content">
-            <h4>Create a Routine</h4>
-            <form name="routine" id="routineForm" method="POST" action="/app/create">
-                <div class="input-field">
-                <input id="name" type="text" name="name" required>
-                <label for="name">Routine Name</label>
-                    </div>
-                    <!-- Exercise selection -->
-                        <div class="input-field">
-                            <select id="exerciseSelect" name="selected_workouts[]" multiple>
-                                <option value="" disabled selected></option>
-                                {% for workout in workouts %}
-                                <option value="{{ workout.workout_id }}">{{ workout.exercise_name }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="exerciseSelect">Select Exercise(s)</label>
-                        </div>
-                        <button class="btn waves-effect waves-light" type="button" id="addExerciseBtn">Add Exercise</button>
-                        <button class="btn waves-effect waves-light" type="submit">Create</button>
-            </form>
+        <!-- Middle column content (Selected Workout) -->
+        {% if selected_workout %}
+        <div class="card">
+            <div class = "card-image">
+                <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
             </div>
-            <div class="modal-footer">
-            <button class="modal-close btn-flat" id="closeModalBtn">Cancel</button>
+            <div class="card-content">
+                <span class = "card-title">
+                {{selected_workout.exercise_name}}
+                </span>
+                <p>Workout Name: {{selected_workout.exercise_name}}</p>
+                <p>Description: {{selected_workout.description}}</p>
+                <p>Muscle Group: {{selected_workout.muscle_group}}</p>
+                <p>Equipment: {{selected_workout.equipment}}</p>
+                <p>Rating: {{selected_workout.rating}}</p>
             </div>
-    </div>
-       <!-- Middle column content (Selected Workout) -->
-       {% if selected_workout %}
-       <div class="card">
-           <div class="card-image">
-               <img src="{{selected_workout.exercise_image2}}" alt="" class="circle responsive-img smaller-image">
-           </div>
-           <div class="card-content">
-               <span class = "card-title">
-               {{selected_workout.exercise_name}}
-               </span>
-               <p>Workout Name: {{selected_workout.exercise_name}}</p>
-               <p>Description: {{selected_workout.description}}</p>
-               <p>Muscle Group: {{selected_workout.muscle_group}}</p>
-               <p>Equipment: {{selected_workout.equipment}}</p>
-               <p>Rating: {{selected_workout.rating}}</p>
-           </div>  
-       </div>
-       {% endif %}
-            </div>
-        </div>
 
-             
+            <div class="card-actions">
+                <form method = "POST" action = "">
+                    <!-- /routine/create -->
+                    <input class="btn waves-effect waves-light center" type="submit" value="ADD TO ROUTINE">
+                </form>
+            </div>
+            
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+       
    
 <section class="col s12 m3" style="margin-top: 5px; overflow-y:scroll; height: 86vh">
     
         <!-- Right column content (Routines) -->
-         <!-- Add your routines content here -->
-
         <ul id="slide-out" class="sidenav sidenav-fixed" style="right: 0; left: auto; margin-top:65px">
             <nav class="nav-extended custom-black">
                 <div class="nav-wrapper">
                 <a href="#" style="font-size:1.2em" class="brand-logo">{{current_user.username}}'s Routines </a>
                 </div>
             </nav>
-
-
-        <input class = "btn grey right bottom" type="submit" value="Add" id="createBtn" style="margin-left:0">
-        
-        <div class="row " style="height: 20vh;">
-                {% for routine in routines%}
-                       <p>{{routine.name}}</p>
-                {% endfor %}
-            </div>
-    
-  
         </ul>
 </section>
+        <!-- Add your routines content here -->
+        <!-- <div class="col s12 m3">
 
-<script>
-    // Wait until the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", function() {
-    const addButton = document.getElementById('createBtn');
-    const modal = document.getElementById('addRoutineModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-
-
-    // Function to show the modal
-    function showModal() {
-        modal.style.display = 'block';
-    }
-
-    // Function to hide the modal
-    function hideModal() {
-        modal.style.display = 'none';
-    }
-
-    // Event listeners
-    addButton.addEventListener('click', showModal);
-    closeModalBtn.addEventListener('click', hideModal);
-
-});
-</script>
-
+            Test 
+            {% if current_user.routine%}
+            <h3>ROUTINES</h3>
+                {% for routines in current_user.routine%}
+                <div class="card">
+                    <div class="card-content">
+                    <p>Testing Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium corporis ut tempore illum ad minima et fugiat, in animi voluptate, voluptatibus dolores magnam laborum deserunt! Sed minus exercitationem maiores expedita?</p>
+                    <p>Rating{{review.rating}}</p>
+                    <span class="card-title">Author:</span>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <h2>Add a routine to see routines</h2>
+            {% endif %}
+        </div> -->
 
 {% endblock %}
