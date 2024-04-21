@@ -7,6 +7,22 @@
 {% block content %}
 <style>
 
+/* Added media queries for smaller screens */
+@media screen and (max-width: 600px) {
+    body {
+        font-size: 0.8em;
+    }
+    .popup-content {
+        width: 90%;
+    }
+    .column {
+        width: 100%;
+    }
+    .smaller-image {
+        width: 100%;
+        height: auto;
+    }
+}
 .popup-container {
     position: fixed;
     top: 50%;
@@ -185,7 +201,13 @@
             <p>Description: {{workout1.description}}</p>
             <p>Muscle Group: {{workout1.muscle_group}}</p>
             <p>Equipment: {{workout1.equipment}}</p>
-            <p>Rating: {{workout1.rating}}</p>
+            <p>Rating: {{workout1.get_rating()}}</p>
+            {%for i in range(workout1.get_rating())%}
+                <i class="material-icons">star</i>
+            {%endfor%}
+            {%for i in range(10-workout1.get_rating())%}
+                <i class="material-icons">star_border</i>
+            {%endfor%}
             </div>
             {% endif %}
             {% endfor %}
