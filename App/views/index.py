@@ -74,7 +74,6 @@ def view_routine_page(routine_id):
         return redirect(url_for('index_views.index_page'))
     flash('Here is your routine.')
     return render_template('index.html', selected_routine=selected_routine, workouts=workouts, routines=routines, user_routines=user_routines)
-
     
 @index_views.route('/init', methods=['GET'])
 def initialize():
@@ -186,7 +185,6 @@ def update_name(routine_id):
         flash('Routine updated')
     else:
         flash('Failed to update routine')
+    return redirect(url_for('index_views.index_page'))
 
-    return redirect(url_for('index_views.view_routine_page', routine_id= routine_id))
 
-   
