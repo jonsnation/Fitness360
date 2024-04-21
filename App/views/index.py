@@ -44,19 +44,11 @@ def login_page():
 @jwt_required()
 def index_page(workout_id = 1, routine_id = 1):
     workouts = get_all_workouts()
-    declared_routine = get_routine_by_id(routine_id)
     routines = get_user_routines(jwt_current_user.id)
     user_routines = get_all_workouts_in_routines(routine_id)
+    workout_routines = get_all_workout_routines()
+    selected_routine = get_routine_by_id(routine_id)
 
-    if declared_routine:
-        workout_routines = get_all_workout_routines()
-        selected_routine = get_routine_by_id(declared_routine.routine_id)
-        
-    else:
-        declared_routine = create_routine_declaration(jwt_current_user)
-        workout_routines = get_all_workout_routines()
-        selected_routine = get_routine_by_id(declared_routine.routine_id)
-        user_routines = get_all_workouts_in_routines(declared_routine.routine_id)
 
     if workout_id is not None:
         selected_workout = Workout.query.get(workout_id)
