@@ -71,13 +71,12 @@ flask run
 ## Snippets 
 
 Mockup<br/>
+![Diagram 1](https://i.imgur.com/CL8QX2B.jpeg)
 
-![Diagram 1](https://imgur.com/a/lTg1pOY.jpg)
+![Diagram 2](https://i.imgur.com/9UJ0nqn.jpeg)
 
-![Diagram 2](https://imgur.com/a/PpaMDc5.jpg)
-
-![Diagram 3](https://imgur.com/a/cKNp5Kx.jpg)
+![Diagram 3](https://i.imgur.com/pwysfUj.jpeg)
 
 System Design<br/>
-![Diagram 4](https://imgur.com/a/qsv7Vrf.jpg)
+![Diagram 4](https://i.imgur.com/2mjtzME.jpeg)
 
