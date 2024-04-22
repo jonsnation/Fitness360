@@ -71,12 +71,13 @@ flask run
 ## Snippets 
 
 Mockup<br/>
-![Diagram 1](images/Wireframes-2.png)
 
-![Diagram 2](images/Wireframes-5.png)
+![Diagram 1](https://imgur.com/a/lTg1pOY.jpg)
 
-![Diagram 3](images/Wireframes-6.png)
+![Diagram 2](https://imgur.com/a/PpaMDc5.jpg)
+
+![Diagram 3](https://imgur.com/a/cKNp5Kx.jpg)
 
 System Design<br/>
-![Diagram 4](images/SystemDesign.png)
+![Diagram 4](https://imgur.com/a/qsv7Vrf.jpg)
 
