@@ -71,6 +71,7 @@ flask run
 ## Snippets 
 
 Mockup<br/>
+
 ![Diagram 1](https://imgur.com/a/lTg1pOY.jpg)
 
 ![Diagram 2](https://imgur.com/a/PpaMDc5.jpg)
